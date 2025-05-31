@@ -2,31 +2,41 @@ package ru.untitled_devs.core.routers.handlers;
 
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.untitled_devs.core.fsm.State;
+import ru.untitled_devs.core.fsm.context.FSMContext;
 import ru.untitled_devs.core.routers.filters.Filter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class MessageHandler implements Handler {
 
     private final List<Filter> filters = new ArrayList<>();
-    private Consumer<Message> action;
+    private BiConsumer<Message, FSMContext> action;
+    private State state;
 
-    public MessageHandler(Consumer<Message> action, Filter... filters) {
+    public MessageHandler(BiConsumer<Message, FSMContext> action, State state, Filter... filters) {
         this.filters.addAll(Arrays.asList(filters));
         this.action = action;
+        this.state = state;
     }
 
     @Override
-    public boolean canHandle(Update update) {
-        return update.hasMessage() && filters.stream().allMatch(filter -> filter.check(update));
+    public boolean canHandle(Update update, FSMContext ctx) {
+        if (!ctx.getState().equals(this.state)) {
+            return false;
+        }
+
+        return update.hasMessage() &&
+                filters.stream().allMatch(filter -> filter.check(update)) ;
     }
 
     @Override
-    public void handleUpdate(Update update) {
-        action.accept(update.getMessage());
+    public void handleUpdate(Update update, FSMContext ctx) {
+        action.accept(update.getMessage(), ctx);
     }
 
     public void addFilter(Filter filter) {

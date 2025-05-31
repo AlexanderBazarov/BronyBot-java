@@ -4,8 +4,11 @@ package ru.untitled_devs.core;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.BanChatMember;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ru.untitled_devs.core.fsm.StorageKey;
+import ru.untitled_devs.core.fsm.storage.Storage;
 import ru.untitled_devs.core.routers.Router;
 
 import java.time.Instant;
@@ -18,10 +21,13 @@ public class Bot extends TelegramLongPollingBot {
 
     private List<Router> routers = new ArrayList<>();
 
-    public Bot(String botToken, String botUsername) {
+    private final Storage storage;
+
+    public Bot(String botToken, String botUsername, Storage storage) {
         super(botToken);
         this.botToken = botToken;
         this.botUsername = botUsername;
+        this.storage = storage;
     }
 
     @Override
@@ -66,8 +72,10 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        Message message = update.getMessage();
+        StorageKey key = new StorageKey(message.getChatId(), message.getFrom().getId());
        for (Router router : this.routers) {
-           router.routeUpdate(update);
+           router.routeUpdate(update, this.storage.getOrCreateContext(key));
        }
     }
 
