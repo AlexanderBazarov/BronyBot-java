@@ -1,9 +1,10 @@
-package ru.untitled_devs.core;
+package ru.untitled_devs.core.client;
 
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.BanChatMember;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -15,7 +16,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Bot extends TelegramLongPollingBot {
+public class Bot extends TelegramLongPollingBot implements BotClient {
     private final String botToken;
     private final String botUsername;
 
@@ -34,7 +35,6 @@ public class Bot extends TelegramLongPollingBot {
     public String getBotUsername() {
         return this.botUsername;
     }
-
 
     public void addRouter(Router router) {
         this.routers.add(router);
@@ -71,6 +71,43 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     @Override
+    public void editMessageText(long chatId, int messageId, String newText) {
+        EditMessageText messageText = new EditMessageText();
+        messageText.setChatId(chatId);
+        messageText.setMessageId(messageId);
+        messageText.setText(newText);
+
+        try {
+            execute(messageText);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public void deleteMessage(long chatId, int messageId) {
+
+    }
+
+    @Override
+    public void sendTypingAction(long chatId) {
+
+    }
+
+    @Override
+    public void sendPhoto(long chatId, String caption, byte[] photo) {
+
+    }
+
+    @Override
+    public void answerCallbackQuery(String callbackQueryId, String text, boolean showAlert) {
+
+    }
+
+
+
+    @Override
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
         StorageKey key = new StorageKey(message.getChatId(), message.getFrom().getId());
@@ -78,6 +115,5 @@ public class Bot extends TelegramLongPollingBot {
            router.routeUpdate(update, this.storage.getOrCreateContext(key));
        }
     }
-
 
 }

@@ -1,4 +1,4 @@
-package ru.untitled_devs;
+package ru.untitled_devs.bot;
 
 
 public class Main {
