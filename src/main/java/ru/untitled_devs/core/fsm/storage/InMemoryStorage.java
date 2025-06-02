@@ -1,12 +1,11 @@
 package ru.untitled_devs.core.fsm.storage;
 
 import ru.untitled_devs.core.fsm.context.FSMContext;
-import ru.untitled_devs.core.fsm.StorageKey;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryStorage implements Storage {
-    private ConcurrentHashMap<StorageKey, FSMContext> store = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<StorageKey, FSMContext> store = new ConcurrentHashMap<>();
 
     @Override
     public FSMContext getContext(StorageKey key) {

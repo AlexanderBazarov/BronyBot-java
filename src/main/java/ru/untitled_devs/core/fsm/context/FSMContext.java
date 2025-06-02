@@ -2,10 +2,7 @@ package ru.untitled_devs.core.fsm.context;
 
 import ru.untitled_devs.core.fsm.State;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class FSMContext {
 
@@ -27,11 +24,11 @@ public class FSMContext {
     }
 
     public <T> T getData(DataKey<T> key) {
-        Object raw = data.get(key);
-        if (raw == null) {
+        Object rawData= data.get(key);
+        if (rawData == null) {
             return null;
         }
-        return key.getType().cast(raw);
+        return key.getType().cast(rawData);
     }
 
     public boolean hasData() {
@@ -58,4 +55,5 @@ public class FSMContext {
         this.state = new State("Default");
         this.data.clear();
     }
+
 }

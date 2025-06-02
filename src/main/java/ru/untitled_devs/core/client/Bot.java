@@ -8,7 +8,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ru.untitled_devs.core.fsm.StorageKey;
+import ru.untitled_devs.core.fsm.storage.StorageKey;
 import ru.untitled_devs.core.fsm.storage.Storage;
 import ru.untitled_devs.core.routers.Router;
 
@@ -104,8 +104,6 @@ public class Bot extends TelegramLongPollingBot implements BotClient {
     public void answerCallbackQuery(String callbackQueryId, String text, boolean showAlert) {
 
     }
-
-
 
     @Override
     public void onUpdateReceived(Update update) {
