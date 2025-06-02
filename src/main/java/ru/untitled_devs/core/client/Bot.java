@@ -17,16 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bot extends TelegramLongPollingBot implements BotClient {
-    private final String botToken;
     private final String botUsername;
 
-    private List<Router> routers = new ArrayList<>();
+    private final List<Router> routers = new ArrayList<>();
 
     private final Storage storage;
 
     public Bot(String botToken, String botUsername, Storage storage) {
         super(botToken);
-        this.botToken = botToken;
         this.botUsername = botUsername;
         this.storage = storage;
     }

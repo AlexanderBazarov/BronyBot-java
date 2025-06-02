@@ -10,13 +10,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class MessageHandler implements Handler {
 
     private final List<Filter> filters = new ArrayList<>();
-    private BiConsumer<Message, FSMContext> action;
-    private State state;
+    private final BiConsumer<Message, FSMContext> action;
+    private final State state;
 
     public MessageHandler(BiConsumer<Message, FSMContext> action, State state, Filter... filters) {
         this.filters.addAll(Arrays.asList(filters));
