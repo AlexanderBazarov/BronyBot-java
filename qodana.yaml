@@ -4,5 +4,3 @@ profile:
   name: qodana.recommended
 include:
   - name: CheckDependencyLicenses
-jacoco:
-  include: true
