@@ -23,6 +23,7 @@ class RegexFilterTest {
         updateMock = mock(Update.class);
         messageMock = mock(Message.class);
         when(updateMock.getMessage()).thenReturn(messageMock);
+        when(updateMock.hasMessage()).thenReturn(true);
     }
 
     @Test
@@ -76,12 +77,11 @@ class RegexFilterTest {
     }
 
     @Test
-    void checkShouldThrowExceptionWhenTextIsNull() {
+    void checkShouldNotThrowExceptionWhenTextIsNull() {
         RegexFilter filter = new RegexFilter("test");
         when(messageMock.getText()).thenReturn(null);
 
-        assertThrows(NullPointerException.class,
-                () -> filter.check(updateMock),
+        assertDoesNotThrow(() -> filter.check(updateMock),
                 "check() should throw NullPointerException when message.getText() is null");
     }
 }

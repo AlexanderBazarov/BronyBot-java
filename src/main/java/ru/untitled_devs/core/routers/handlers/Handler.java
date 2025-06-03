@@ -2,9 +2,12 @@ package ru.untitled_devs.core.routers.handlers;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.untitled_devs.core.fsm.context.FSMContext;
+import ru.untitled_devs.core.routers.filters.Filter;
 
 public interface Handler {
     boolean canHandle(Update update, FSMContext ctx);
 
     void handleUpdate(Update update, FSMContext ctx);
+
+    void addFilter(Filter filter);
 }

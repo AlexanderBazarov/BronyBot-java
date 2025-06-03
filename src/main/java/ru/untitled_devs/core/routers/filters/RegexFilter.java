@@ -14,8 +14,14 @@ public class RegexFilter implements Filter {
 
     @Override
     public boolean check(Update update) {
-        String text = update.getMessage().getText();
+        String text = update.hasMessage() ? update.getMessage().getText()
+                : update.hasCallbackQuery() ? update.getCallbackQuery().getData()
+                : null;
+
+        if (text == null) return false;
 
         return this.pattern.matcher(text).find();
     }
+
+
 }
