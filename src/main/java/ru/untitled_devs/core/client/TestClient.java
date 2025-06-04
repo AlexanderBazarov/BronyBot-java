@@ -1,8 +1,10 @@
 package ru.untitled_devs.core.client;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 public class TestClient implements BotClient {
+
     @Override
     public void sendMessage(long chatId, String text) {
 
@@ -19,12 +21,12 @@ public class TestClient implements BotClient {
     }
 
     @Override
-    public void deleteMessage(long chatId, int messageId) {
+    public void editMessageReplyMarkup(long chatId, int messageId, InlineKeyboardMarkup replyKeyboard) {
 
     }
 
     @Override
-    public void sendTypingAction(long chatId) {
+    public void deleteMessage(long chatId, int messageId) {
 
     }
 

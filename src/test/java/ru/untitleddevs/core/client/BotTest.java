@@ -1,5 +1,7 @@
 package ru.untitleddevs.core.client;
 
+import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.BanChatMember;
@@ -24,12 +26,14 @@ class BotTest {
     private Bot bot;
     private Storage storage;
     private Router router;
+    private Logger logger;
 
     @BeforeEach
     void setUp() {
         storage = mock(Storage.class);
         router = mock(Router.class);
-        bot = new Bot("testToken", "testUsername", storage);
+        logger = mock(Logger.class);
+        bot = new Bot("testToken", "testUsername", storage, logger);
         bot.addRouter(router);
     }
 
