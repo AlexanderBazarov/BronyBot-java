@@ -102,6 +102,12 @@ public class Bot extends TelegramLongPollingBot implements BotClient {
         editMessageReplyMarkup.setChatId(chatId);
         editMessageReplyMarkup.setMessageId(messageId);
         editMessageReplyMarkup.setReplyMarkup(replyKeyboard);
+
+        try {
+            execute(editMessageReplyMarkup);
+        } catch (TelegramApiException e) {
+            this.logger.error(e.getMessage());
+        }
     }
 
     @Override
@@ -125,6 +131,12 @@ public class Bot extends TelegramLongPollingBot implements BotClient {
 
         InputFile file = new InputFile(new ByteArrayInputStream(photo), getImageFileNameWithExtension(photo));
         sendPhoto.setPhoto(file);
+
+        try {
+            execute(sendPhoto);
+        } catch (TelegramApiException e) {
+            this.logger.error(e.getMessage());
+        }
     }
 
     @Override
@@ -133,6 +145,12 @@ public class Bot extends TelegramLongPollingBot implements BotClient {
         answerCallbackQuery.setCallbackQueryId(callbackQueryId);
         answerCallbackQuery.setText(text);
         answerCallbackQuery.setShowAlert(showAlert);
+
+        try {
+            execute(answerCallbackQuery);
+        } catch (TelegramApiException e) {
+            this.logger.error(e.getMessage());
+        }
     }
 
     public void banChatMember(long chatId, long userId, int duration) {
@@ -148,7 +166,7 @@ public class Bot extends TelegramLongPollingBot implements BotClient {
         try {
             execute(banChatMember);
         } catch (TelegramApiException e) {
-            System.err.println(e.getMessage());
+            this.logger.error(e.getMessage());
         }
 
     }
