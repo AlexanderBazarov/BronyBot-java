@@ -2,8 +2,6 @@ package ru.untitled_devs.core.routers.filters;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.util.Objects;
-
 public class Command implements Filter{
     String command;
 
@@ -14,7 +12,7 @@ public class Command implements Filter{
     @Override
     public boolean check(Update update) {
         if (!update.hasMessage() || update.getMessage().getText() == null ||
-                update.getMessage().getText().startsWith("/")) {
+                !update.getMessage().getText().startsWith("/")) {
             return false;
         }
 

@@ -19,7 +19,7 @@ public class FileUtils {
             case "image/jpeg" -> ".jpg";
             case "image/gif" -> ".gif";
             case "image/webp" -> ".webp";
-            default -> ".bin";
+            default -> "";
         };
 
         return UUID.randomUUID() + ext;
