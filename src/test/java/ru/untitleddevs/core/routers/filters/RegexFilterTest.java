@@ -29,6 +29,8 @@ class RegexFilterTest {
     @Test
     void checkShouldReturnTrueWhenPatternMatchesText() {
         RegexFilter filter = new RegexFilter("hello");
+        when(updateMock.hasMessage()).thenReturn(true);
+        when(messageMock.hasText()).thenReturn(true);
         when(messageMock.getText()).thenReturn("say hello to the world");
 
         boolean result = filter.check(updateMock);
@@ -48,7 +50,9 @@ class RegexFilterTest {
 
     @Test
     void checkShouldHonorUnicodeFlagWhenMatchingUnicodeCharacters() {
-        RegexFilter filter = new RegexFilter("привет");
+        RegexFilter filter = new RegexFilter("\\p{L}+");
+        when(updateMock.hasMessage()).thenReturn(true);
+        when(messageMock.hasText()).thenReturn(true);
         when(messageMock.getText()).thenReturn("Скажи привет, пожалуйста");
 
         boolean result = filter.check(updateMock);
