@@ -48,10 +48,12 @@ public class Bot extends TelegramLongPollingBot implements BotClient {
         return this.botUsername;
     }
 
+    @Override
     public void addRouter(Router router) {
         this.routers.add(router);
     }
 
+    @Override
     public void addMiddleware(Middleware middleware) {
         this.middlewares.add(middleware);
     }
@@ -166,7 +168,7 @@ public class Bot extends TelegramLongPollingBot implements BotClient {
         try {
             execute(banChatMember);
         } catch (TelegramApiException e) {
-            this.logger.error(e.getMessage());
+            System.err.println(e.getMessage());
         }
 
     }
