@@ -1,4 +1,4 @@
-package ru.untitled_devs.core.fsm;
+package ru.untitled_devs.core.fsm.states;
 
 import java.util.Objects;
 

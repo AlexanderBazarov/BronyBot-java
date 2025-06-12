@@ -1,12 +1,11 @@
 package ru.untitled_devs.core.fsm.context;
-
-import ru.untitled_devs.core.fsm.State;
+import ru.untitled_devs.core.fsm.states.DefaultStates;
+import ru.untitled_devs.core.fsm.states.State;
 
 import java.util.*;
 
 public class FSMContext {
-
-    private State state = new State("Default");
+    private State state;
     private final Map<DataKey<?>, Object> data = new HashMap<>();
 
     public FSMContext() {}
@@ -52,7 +51,7 @@ public class FSMContext {
     }
 
     public void reset() {
-        this.state = new State("Default");
+        this.state = DefaultStates.DEFAULT;
         this.data.clear();
     }
 

@@ -2,9 +2,14 @@ package ru.untitled_devs.core.client;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.inlinequery.InlineQuery;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import ru.untitled_devs.core.context.UpdateContext;
+import ru.untitled_devs.core.fsm.storage.Storage;
+import ru.untitled_devs.core.fsm.storage.StorageKey;
 import ru.untitled_devs.core.middlewares.Middleware;
 import ru.untitled_devs.core.routers.Router;
 
@@ -16,6 +21,7 @@ public class TestClient implements BotClient {
     private final List<Middleware> middlewares = new ArrayList<>();
 
     protected static final Logger logger = LogManager.getLogger();
+    private Storage storage;
 
     @Override
     public void addMiddleware(Middleware middleware) {
@@ -62,8 +68,62 @@ public class TestClient implements BotClient {
         logger.info("Answered callback query {} with text '{}' and showAlert={}", callbackQueryId, text, showAlert);
     }
 
-    void simulateUserMessage(Message message) {
+    void simulateUserCallbackQuery(CallbackQuery callbackQuery) {
+        Update update = new Update();
+        update.setCallbackQuery(callbackQuery);
+        this.startRouting(update);
+    }
 
+    void simulateUserInlineQuery(InlineQuery inlineQuery) {
+        Update update = new Update();
+        update.setInlineQuery(inlineQuery);
+        this.startRouting(update);
+    }
+
+    void simulateUserEditedMessage(Message editedMessage) {
+        Update update = new Update();
+        update.setEditedMessage(editedMessage);
+        this.startRouting(update);
+    }
+
+    void simulateUserChannelPost(Message channelPost) {
+        Update update = new Update();
+        update.setChannelPost(channelPost);
+        this.startRouting(update);
+    }
+
+    void simulateUserEditedChannelPost(Message editedChannelPost) {
+        Update update = new Update();
+        update.setEditedChannelPost(editedChannelPost);
+        this.startRouting(update);
+    }
+
+    void startRouting(Update update) {
+        UpdateContext updateContext = new UpdateContext(update);
+        if (updateContext.getChatId() == null || updateContext.getUserId() == null) {
+            return;
+        }
+        StorageKey key = new StorageKey(updateContext.getChatId(), updateContext.getUserId());
+
+        for (Middleware middleware : this.middlewares) {
+            try {
+                if (!middleware.preHandle(update)) {
+                    logger.debug("Middleware prevented handling update: {}", update);
+                    return;
+                }
+            } catch (Exception e) {
+                logger.error("Exception in middleware: ", e);
+                return;
+            }
+        }
+
+        for (Router router : this.routers) {
+            try {
+                router.routeUpdate(update, this.storage.getOrCreateContext(key));
+            } catch (Exception e) {
+                logger.error("Exception in router {} while handling update: {}", router.getClass().getSimpleName(), update, e);
+            }
+        }
     }
 
 }

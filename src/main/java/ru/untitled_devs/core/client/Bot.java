@@ -25,6 +25,7 @@ import java.io.ByteArrayInputStream;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.*;
 
 
 import static ru.untitled_devs.core.utils.FileUtils.getImageFileNameWithExtension;
@@ -175,10 +176,24 @@ public class Bot extends TelegramLongPollingBot implements BotClient {
 
     @Override
     public void onUpdateReceived(Update update) {
+        this.handleUpdateAsync(update);
+    }
+
+    public Future<?> handleUpdateAsync(Update update) {
+        return CompletableFuture
+                .runAsync(() -> processUpdate(update))
+                .whenComplete((v, ex) -> {
+                    if (ex != null) logger.error("Update crashed", ex);
+                    else logger.debug("Update {} processed", update.getUpdateId());
+                });
+    }
+
+    private void processUpdate(Update update) {
         UpdateContext updateContext = new UpdateContext(update);
         if (updateContext.getChatId() == null || updateContext.getUserId() == null) {
             return;
         }
+
         StorageKey key = new StorageKey(updateContext.getChatId(), updateContext.getUserId());
 
         for (Middleware middleware : this.middlewares) {
@@ -193,13 +208,13 @@ public class Bot extends TelegramLongPollingBot implements BotClient {
             }
         }
 
-       for (Router router : this.routers) {
-           try {
-               router.routeUpdate(update, this.storage.getOrCreateContext(key));
-           } catch (Exception e) {
-               logger.error("Exception in router {} while handling update: {}", router.getClass().getSimpleName(), update, e);
-           }
-       }
+        for (Router router : this.routers) {
+            try {
+                router.routeUpdate(update, this.storage.getOrCreateContext(key));
+            } catch (Exception e) {
+                logger.error("Exception in router {} while handling update: {}", router.getClass().getSimpleName(), update, e);
+            }
+        }
     }
 
 }

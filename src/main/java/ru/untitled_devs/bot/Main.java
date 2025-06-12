@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+import ru.untitled_devs.bot.start.StartRouter;
 import ru.untitled_devs.core.client.Bot;
 import ru.untitled_devs.core.fsm.storage.InMemoryStorage;
 
@@ -18,6 +19,9 @@ public class Main {
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
             Bot bot = new Bot(config.getBotToken(), config.getBotName(), storage,logger);
+
+            bot.addRouter(new StartRouter(bot));
+
             botsApi.registerBot(bot);
         } catch (Exception e) {
             logger.error(e.getMessage());

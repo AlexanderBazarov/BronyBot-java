@@ -18,6 +18,7 @@ public class InMemoryStorage implements Storage {
     }
 
     public FSMContext getOrCreateContext(StorageKey key) {
-        return store.computeIfAbsent(key, k -> new FSMContext());
+        return store.computeIfAbsent(key,
+                k -> new FSMContext());
     }
 }

@@ -1,7 +1,8 @@
 package ru.untitleddevs.core.fsm.context;
 
 import org.junit.jupiter.api.Test;
-import ru.untitled_devs.core.fsm.State;
+import ru.untitled_devs.core.fsm.states.DefaultStates;
+import ru.untitled_devs.core.fsm.states.State;
 import ru.untitled_devs.core.fsm.context.DataKey;
 import ru.untitled_devs.core.fsm.context.FSMContext;
 
@@ -190,7 +191,7 @@ public class FSMContextTest {
 
         context.reset();
 
-        assertEquals(new State("Default"), context.getState(), "State should be Default");
+        assertEquals(DefaultStates.DEFAULT, context.getState(), "State should be Default");
         assertEquals(0, context.getAllData().size());
         assertNotNull(context.getAllData(), "Data should not be null");
     }

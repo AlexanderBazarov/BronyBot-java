@@ -23,6 +23,10 @@ import ru.untitled_devs.core.fsm.storage.Storage;
 import ru.untitled_devs.core.routers.Router;
 
 import java.util.Base64;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -183,7 +187,7 @@ class BotTest {
 
 
     @Test
-    void onUpdateMessageReceivedRoutesUpdateToAllRouters() {
+    void onUpdateMessageReceivedRoutesUpdateToAllRouters() throws ExecutionException, InterruptedException, TimeoutException {
         Update update = mock(Update.class);
         Message message = mock(Message.class);
         User user = mock(User.class);
@@ -202,16 +206,14 @@ class BotTest {
         FSMContext context = mock(FSMContext.class);
         when(storage.getOrCreateContext(any(StorageKey.class))).thenReturn(context);
 
-        assertDoesNotThrow(
-                () -> bot.onUpdateReceived(update),
-                "onUpdateReceived should not throw when message and context are valid"
-        );
+        Future<?> future = bot.handleUpdateAsync(update);
+        future.get(3, TimeUnit.SECONDS);
 
         verify(router, times(1)).routeUpdate(update, context);
     }
 
     @Test
-    void onUpdateCallbackQueryReceivedRoutesUpdateToAllRouters() {
+    void onUpdateCallbackQueryReceivedRoutesUpdateToAllRouters() throws ExecutionException, InterruptedException, TimeoutException {
         Update update = mock(Update.class);
         CallbackQuery callbackQuery = mock(CallbackQuery.class);
         User user = mock(User.class);
@@ -232,16 +234,14 @@ class BotTest {
         FSMContext context = mock(FSMContext.class);
         when(storage.getOrCreateContext(any(StorageKey.class))).thenReturn(context);
 
-        assertDoesNotThrow(
-                () -> bot.onUpdateReceived(update),
-                "onUpdateReceived should not throw when message and context are valid"
-        );
+        Future<?> future = bot.handleUpdateAsync(update);
+        future.get(3, TimeUnit.SECONDS);
 
         verify(router, times(1)).routeUpdate(update, context);
     }
 
     @Test
-    void onUpdateEditedMessageReceivedRoutesUpdateToAllRouters() {
+    void onUpdateEditedMessageReceivedRoutesUpdateToAllRouters() throws ExecutionException, InterruptedException, TimeoutException {
         Update update = mock(Update.class);
         Message editedMessage = mock(Message.class);
         User user = mock(User.class);
@@ -261,16 +261,14 @@ class BotTest {
         FSMContext context = mock(FSMContext.class);
         when(storage.getOrCreateContext(any(StorageKey.class))).thenReturn(context);
 
-        assertDoesNotThrow(
-                () -> bot.onUpdateReceived(update),
-                "onUpdateReceived should not throw when message and context are valid"
-        );
+        Future<?> future = bot.handleUpdateAsync(update);
+        future.get(3, TimeUnit.SECONDS);
 
         verify(router, times(1)).routeUpdate(update, context);
     }
 
     @Test
-    void onUpdateChanelPostReceivedRoutesUpdateToAllRouters() {
+    void onUpdateChanelPostReceivedRoutesUpdateToAllRouters() throws ExecutionException, InterruptedException, TimeoutException {
         Update update = mock(Update.class);
         Message postMessage = mock(Message.class);
         User user = mock(User.class);
@@ -290,16 +288,14 @@ class BotTest {
         FSMContext context = mock(FSMContext.class);
         when(storage.getOrCreateContext(any(StorageKey.class))).thenReturn(context);
 
-        assertDoesNotThrow(
-                () -> bot.onUpdateReceived(update),
-                "onUpdateReceived should not throw when message and context are valid"
-        );
+        Future<?> future = bot.handleUpdateAsync(update);
+        future.get(3, TimeUnit.SECONDS);
 
         verify(router, times(1)).routeUpdate(update, context);
     }
 
     @Test
-    void onUpdateEditedChanelPostReceivedRoutesUpdateToAllRouters() {
+    void onUpdateEditedChanelPostReceivedRoutesUpdateToAllRouters() throws ExecutionException, InterruptedException, TimeoutException {
         Update update = mock(Update.class);
         Message editedPostMessage = mock(Message.class);
         User user = mock(User.class);
@@ -319,10 +315,8 @@ class BotTest {
         FSMContext context = mock(FSMContext.class);
         when(storage.getOrCreateContext(any(StorageKey.class))).thenReturn(context);
 
-        assertDoesNotThrow(
-                () -> bot.onUpdateReceived(update),
-                "onUpdateReceived should not throw when message and context are valid"
-        );
+        Future<?> future = bot.handleUpdateAsync(update);
+        future.get(3, TimeUnit.SECONDS);
 
         verify(router, times(1)).routeUpdate(update, context);
     }

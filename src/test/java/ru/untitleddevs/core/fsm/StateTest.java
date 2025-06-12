@@ -1,7 +1,7 @@
 package ru.untitleddevs.core.fsm;
 
 import org.junit.jupiter.api.Test;
-import ru.untitled_devs.core.fsm.State;
+import ru.untitled_devs.core.fsm.states.State;
 
 import static org.junit.jupiter.api.Assertions.*;
 

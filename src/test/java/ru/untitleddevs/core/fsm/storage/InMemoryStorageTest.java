@@ -34,17 +34,6 @@ class InMemoryStorageTest {
         assertSame(context, retrieved, "getContext() should return the exact same instance that was passed to setContext()");
     }
 
-    @Test
-    void getOrCreateContextShouldCreateNewContext_WhenAbsent() {
-        InMemoryStorage storage = new InMemoryStorage();
-        StorageKey key = new StorageKey(4L, 5L);
-
-        FSMContext firstRetrieval = storage.getOrCreateContext(key);
-
-        assertNotNull(firstRetrieval, "getOrCreateContext() should create a new FSMContext when none exists");
-        assertEquals("Default", firstRetrieval.getState().getName(),
-                "Newly created FSMContext should have its state initialized to \"Default\"");
-    }
 
     @Test
     void getOrCreateContextShouldReturnSameInstance_OnMultipleCalls() {

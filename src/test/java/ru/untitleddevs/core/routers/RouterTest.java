@@ -1,105 +1,76 @@
 package ru.untitleddevs.core.routers;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.untitled_devs.core.fsm.states.State;
 import ru.untitled_devs.core.fsm.context.FSMContext;
 import ru.untitled_devs.core.routers.Router;
 import ru.untitled_devs.core.routers.handlers.Handler;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class RouterTest {
 
-    @Test
-    void addHandlerAndGetHandler() {
-        Router router = new Router();
+    private Router router;
+    private FSMContext ctx;
+    private Update update;
+    private State state;
 
-        Handler handler1 = mock(Handler.class);
-        Handler handler2 = mock(Handler.class);
-
-        assertTrue(router.getHandler().isEmpty(), "Handler list should be empty initially");
-
-        router.addHandler(handler1);
-        List<Handler> handlersAfterOne = router.getHandler();
-        assertEquals(1, handlersAfterOne.size(), "After adding one handler, list size should be 1");
-        assertSame(handler1, handlersAfterOne.getFirst(), "First element should be handler1");
-
-        router.addHandler(handler2);
-        List<Handler> handlersAfterTwo = router.getHandler();
-        assertEquals(2, handlersAfterTwo.size(), "After adding second handler, list size should be 2");
-        assertSame(handler1, handlersAfterTwo.get(0), "First element should still be handler1");
-        assertSame(handler2, handlersAfterTwo.get(1), "Second element should be handler2");
+    @BeforeEach
+    void setup() {
+        router = new Router();
+        ctx = mock(FSMContext.class);
+        update = mock(Update.class);
+        state = new State("TEST");
+        when(ctx.getState()).thenReturn(state);
     }
 
     @Test
-    void getHandlerReturnsUnmodifiableList() {
-        Router router = new Router();
+    void addHandlerStoresHandlerUnderCorrectState() {
         Handler handler = mock(Handler.class);
-        router.addHandler(handler);
+        router.addHandler(state, handler);
 
-        List<Handler> handlersView = router.getHandler();
-
-        assertThrows(
-                UnsupportedOperationException.class,
-                () -> handlersView.add(mock(Handler.class)),
-                "Returned handler list should be unmodifiable"
-        );
+        Map<State, List<Handler>> handlers = router.getHandlers();
+        assertTrue(handlers.containsKey(state));
+        assertEquals(1, handlers.get(state).size());
+        assertSame(handler, handlers.get(state).get(0));
     }
 
     @Test
-    void routeUpdateInvokesHandleWhenCanHandleTrue() {
-        Update update = mock(Update.class);
-        FSMContext ctx = mock(FSMContext.class);
+    void getHandlersReturnsUnmodifiableMap() {
+        router.addHandler(state, mock(Handler.class));
+        Map<State, List<Handler>> handlers = router.getHandlers();
 
-        Router router = new Router();
-        Handler handler = mock(Handler.class);
-
-        when(handler.canHandle(update, ctx)).thenReturn(true);
-
-        router.addHandler(handler);
-        router.routeUpdate(update, ctx);
-
-        verify(handler, times(1)).handleUpdate(update, ctx);
+        assertThrows(UnsupportedOperationException.class, () -> handlers.put(new State("Other"), List.of()));
     }
 
     @Test
-    void routeUpdateDoesNotInvokeHandleWhenCanHandleFalse() {
-        Update update = mock(Update.class);
-        FSMContext ctx = mock(FSMContext.class);
-
-        Router router = new Router();
-        Handler handler = mock(Handler.class);
-
-        when(handler.canHandle(update, ctx)).thenReturn(false);
-
-        router.addHandler(handler);
-        router.routeUpdate(update, ctx);
-
-        verify(handler, never()).handleUpdate(any(Update.class), any(FSMContext.class));
-    }
-
-    @Test
-    void routeUpdateInvokesOnlyThoseHandlersThatCanHandle() {
-        Update update = mock(Update.class);
-        FSMContext ctx = mock(FSMContext.class);
-
-        Router router = new Router();
-
+    void routeUpdateCallsOnlyHandlersThatCanHandle() {
         Handler handlerTrue = mock(Handler.class);
         Handler handlerFalse = mock(Handler.class);
 
         when(handlerTrue.canHandle(update, ctx)).thenReturn(true);
         when(handlerFalse.canHandle(update, ctx)).thenReturn(false);
 
-        router.addHandler(handlerTrue);
-        router.addHandler(handlerFalse);
+        router.addHandler(state, handlerTrue);
+        router.addHandler(state, handlerFalse);
 
         router.routeUpdate(update, ctx);
 
         verify(handlerTrue, times(1)).handleUpdate(update, ctx);
-        verify(handlerFalse, never()).handleUpdate(any(Update.class), any(FSMContext.class));
+        verify(handlerFalse, never()).handleUpdate(any(), any());
+    }
+
+    @Test
+    void routeUpdateDoesNothingIfNoHandlersForState() {
+        FSMContext ctxWithoutState = mock(FSMContext.class);
+        when(ctxWithoutState.getState()).thenReturn(new State("UNREGISTERED"));
+
+        assertDoesNotThrow(() -> router.routeUpdate(update, ctxWithoutState));
     }
 }
