@@ -1,4 +1,4 @@
-package ru.untitled_devs.bot.repositories;
+package ru.untitled_devs.bot.shared.repositories;
 
 import java.util.List;
 import java.util.Optional;

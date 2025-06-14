@@ -5,7 +5,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
-import ru.untitled_devs.bot.start.StartRouter;
+import ru.untitled_devs.bot.config.Config;
+import ru.untitled_devs.bot.features.start.StartRouter;
 import ru.untitled_devs.core.client.Bot;
 import ru.untitled_devs.core.fsm.storage.InMemoryStorage;
 

@@ -1,4 +1,4 @@
-package ru.untitled_devs.bot.repositories;
+package ru.untitled_devs.bot.shared.repositories;
 
 import dev.morphia.Datastore;
 import dev.morphia.query.MorphiaCursor;

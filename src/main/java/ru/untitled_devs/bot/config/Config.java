@@ -1,6 +1,6 @@
-package ru.untitled_devs.bot;
+package ru.untitled_devs.bot.config;
 
-public class Config {
+public final class Config {
     private String botToken;
     private String botName;
 

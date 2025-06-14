@@ -1,9 +1,9 @@
-package ru.untitled_devs.bot.registration.fsm;
+package ru.untitled_devs.bot.features.registration;
 
 import ru.untitled_devs.core.fsm.states.State;
 import ru.untitled_devs.core.fsm.states.StatesGroup;
 
-public class RegistrationStates extends StatesGroup {
+public final class RegistrationStates extends StatesGroup {
     public static final State START = state();
     public static final State NAME = state();
     public static final State AGE = state();
