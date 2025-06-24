@@ -2,12 +2,13 @@ package ru.untitled_devs.core.fsm.states;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class StatesGroup {
-    private static final Map<Class<?>, List<State>> cache = new HashMap<>();
+    private static final Map<Class<?>, List<State>> cache = new ConcurrentHashMap<>();
 
-    protected static State state() {
-        return null;
+    protected static State state(Class<? extends StatesGroup> groupClass, String name) {
+        return new State(groupClass.getSimpleName() + ":" + name);
     }
 
     public static List<State> allStates(Class<? extends StatesGroup> cls) {
@@ -18,14 +19,9 @@ public abstract class StatesGroup {
                     field.setAccessible(true);
                     try {
                         State val = (State) field.get(null);
-                        if (val == null) {
-                            String name = clazz.getSimpleName() + ":" + field.getName();
-                            State s = new State(name);
-                            field.set(null, s);
-                            result.add(s);
-                        } else {
-                            result.add(val);
-                        }
+
+						result.add(val);
+
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
@@ -44,4 +40,8 @@ public abstract class StatesGroup {
         int i = states.indexOf(current);
         return (i >= 0 && i < states.size() - 1) ? states.get(i + 1) : null;
     }
+
+	public static boolean contains(Class<? extends StatesGroup> cls, State state) {
+		return allStates(cls).contains(state);
+	}
 }

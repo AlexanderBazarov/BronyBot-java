@@ -1,23 +1,21 @@
 package ru.untitled_devs.bot.config;
 
+import java.util.Objects;
+
 public final class Config {
-    private String botToken;
-    private String botName;
+	private static BotConfig botConfig = new BotConfig();
+	private static MongoConfig mongoConfig = new MongoConfig();
+	private static GeocodingConfig geocodingConfig = new GeocodingConfig();
 
-    public Config() {
-        loadVariables();
-    }
+	public static BotConfig getBotConfig() {
+		return botConfig;
+	}
 
-    private void loadVariables() {
-        this.botToken = System.getenv("BOT_TOKEN");
-        this.botName = System.getenv("BOT_NAME");
-    }
+	public static MongoConfig getMongoConfig() {
+		return mongoConfig;
+	}
 
-    public String getBotToken() {
-        return this.botToken;
-    }
-
-    public String getBotName() {
-        return this.botName;
-    }
+	public static GeocodingConfig getGeocodingConfig() {
+		return geocodingConfig;
+	}
 }

@@ -5,10 +5,12 @@ import ru.untitled_devs.core.fsm.states.State;
 import java.util.*;
 
 public class FSMContext {
-    private State state;
+    private State state = DefaultStates.DEFAULT;
     private final Map<DataKey<?>, Object> data = new HashMap<>();
 
-    public FSMContext() {}
+    public FSMContext() {
+
+	}
 
     public State getState() {
         return this.state;

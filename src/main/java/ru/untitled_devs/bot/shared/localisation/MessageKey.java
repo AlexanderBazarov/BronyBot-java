@@ -6,6 +6,7 @@ public enum MessageKey {
 	BANNED("banned"),
 	NOT_REGISTERED("not_registered"),
 	WHATS_YOUR_NAME("whats_your_name"),
+	ASK_AGE("ask_age"),
 	LOW_AGE("low_age"),
 	AGE_ERROR("age_error"),
 	ASK_LOCATION("ask_location"),
@@ -15,6 +16,8 @@ public enum MessageKey {
 	THANKS_FOR_PHOTO("thanks_for_photo"),
 	THANKS_FOR_VIDEO("thanks_for_video"),
 	TOO_BIG_PHOTO("too_big_photo"),
+
+	CANT_FIND_LOCATION("cant_find_location"),
 
 	CREATE_PROFILE("create_profile"),
 	SUCCESSFUL_REGISTRATION("successful_registration"),

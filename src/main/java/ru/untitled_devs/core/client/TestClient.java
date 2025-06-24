@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.InlineQuery;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import ru.untitled_devs.core.context.UpdateContext;
+import ru.untitled_devs.core.fsm.context.FSMContext;
 import ru.untitled_devs.core.fsm.storage.Storage;
 import ru.untitled_devs.core.fsm.storage.StorageKey;
 import ru.untitled_devs.core.middlewares.Middleware;
@@ -105,9 +106,11 @@ public class TestClient implements BotClient {
         }
         StorageKey key = new StorageKey(updateContext.getChatId(), updateContext.getUserId());
 
+		FSMContext context = this.storage.getOrCreateContext(key);
+
         for (Middleware middleware : this.middlewares) {
             try {
-                if (!middleware.preHandle(update)) {
+                if (!middleware.preHandle(update, context)) {
                     logger.debug("Middleware prevented handling update: {}", update);
                     return;
                 }
@@ -119,7 +122,7 @@ public class TestClient implements BotClient {
 
         for (Router router : this.routers) {
             try {
-                router.routeUpdate(update, this.storage.getOrCreateContext(key));
+                router.routeUpdate(update, context);
             } catch (Exception e) {
                 logger.error("Exception in router {} while handling update: {}", router.getClass().getSimpleName(), update, e);
             }

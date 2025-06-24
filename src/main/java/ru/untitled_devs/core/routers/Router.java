@@ -20,7 +20,7 @@ public class Router {
         return Collections.unmodifiableMap(this.handlers);
     }
 
-    public void routeUpdate(Update update, FSMContext ctx) {
+    public boolean routeUpdate(Update update, FSMContext ctx) {
         if (ctx.getState() == null) {
             ctx.setState(DefaultStates.DEFAULT);
         }
@@ -29,7 +29,9 @@ public class Router {
         for (Handler handler : stateHandlers) {
             if (handler.canHandle(update, ctx)) {
                 handler.handleUpdate(update, ctx);
+				return true;
             }
         }
+		return false;
     }
 }

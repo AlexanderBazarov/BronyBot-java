@@ -6,7 +6,7 @@ public final class DataKey<T> {
     private final String name;
     private final Class<T> type;
 
-    private DataKey(String name, Class<T> type) {
+    public DataKey(String name, Class<T> type) {
         this.name = name;
         this.type = type;
     }
