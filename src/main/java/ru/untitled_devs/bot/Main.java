@@ -10,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import ru.untitled_devs.bot.config.Config;
+import ru.untitled_devs.bot.features.localisation.LocalisationRouter;
+import ru.untitled_devs.bot.features.localisation.midlewares.LocalisationMiddleware;
 import ru.untitled_devs.bot.features.registration.RegistrationRouter;
 import ru.untitled_devs.bot.features.registration.middlewares.LoginMiddleware;
 import ru.untitled_devs.bot.features.start.StartRouter;
@@ -35,10 +37,12 @@ public class Main {
             PollingClient bot = new PollingClient(Config.getBotConfig().getBotToken(),
 				Config.getBotConfig().getBotName(), storage,logger);
 
+			bot.addMiddleware(new LocalisationMiddleware());
 			bot.addMiddleware(new LoginMiddleware());
 
             bot.addRouter(new StartRouter(bot));
 			bot.addRouter(new RegistrationRouter(bot, datastore, geocoder));
+			bot.addRouter(new LocalisationRouter(bot));
 
             botsApi.registerBot(bot);
         } catch (Exception e) {

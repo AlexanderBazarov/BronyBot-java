@@ -1,5 +1,6 @@
 package ru.untitled_devs.core.routers.handlers;
 
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.untitled_devs.core.fsm.context.FSMContext;
@@ -13,9 +14,9 @@ import java.util.function.BiConsumer;
 public class CallbackQueryHandler implements Handler {
 
     private final List<Filter> filters = new ArrayList<>();
-    private final BiConsumer<Message, FSMContext> action;
+    private final BiConsumer<CallbackQuery, FSMContext> action;
 
-    public CallbackQueryHandler(BiConsumer<Message, FSMContext> action, Filter... filters) {
+    public CallbackQueryHandler(BiConsumer<CallbackQuery, FSMContext> action, Filter... filters) {
         this.filters.addAll(Arrays.asList(filters));
         this.action = action;
     }
@@ -28,7 +29,7 @@ public class CallbackQueryHandler implements Handler {
 
     @Override
     public void handleUpdate(Update update, FSMContext ctx) {
-        action.accept(update.getMessage(), ctx);
+        action.accept(update.getCallbackQuery(), ctx);
     }
 
     public void addFilter(Filter filter) {
