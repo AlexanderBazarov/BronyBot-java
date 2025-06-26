@@ -203,7 +203,7 @@ public class PollingClient extends TelegramLongPollingBot implements BotClient {
             try {
                 if (!middleware.preHandle(update, context)){
                     logger.debug("Middleware prevented handling update: {}", update);
-                    return;
+                    break;
                 }
             } catch (Exception e) {
                 logger.error("Exception in middleware: ", e);
