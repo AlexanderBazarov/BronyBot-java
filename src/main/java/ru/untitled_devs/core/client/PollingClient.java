@@ -16,6 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.untitled_devs.core.context.UpdateContext;
+import ru.untitled_devs.core.dispatcher.Dispatcher;
 import ru.untitled_devs.core.fsm.context.FSMContext;
 import ru.untitled_devs.core.fsm.storage.StorageKey;
 import ru.untitled_devs.core.fsm.storage.Storage;
@@ -33,34 +34,27 @@ import static ru.untitled_devs.core.utils.FileUtils.getImageFileNameWithExtensio
 
 public class PollingClient extends TelegramLongPollingBot implements BotClient {
     private final String botUsername;
-    private final List<Router> routers = new ArrayList<>();
-    private final Storage storage;
-    private final List<Middleware> middlewares = new ArrayList<>();
     private final Logger logger;
+	private final Dispatcher dispatcher;
 
-    public PollingClient(String botToken, String botUsername, Storage storage, Logger logger) {
+    public PollingClient(String botToken, String botUsername, Dispatcher dispatcher, Logger logger) {
         super(botToken);
         this.botUsername = botUsername;
-        this.storage = storage;
         this.logger = logger;
-    }
+		this.dispatcher = dispatcher;
+	}
 
     @Override
     public String getBotUsername() {
         return this.botUsername;
     }
 
-    @Override
-    public void addRouter(Router router) {
-        this.routers.add(router);
-    }
+	@Override
+	public Dispatcher getDispatcher() {
+		return dispatcher;
+	}
 
-    @Override
-    public void addMiddleware(Middleware middleware) {
-        this.middlewares.add(middleware);
-    }
-
-    public void sendMessage(long chatId, String text) {
+	public void sendMessage(long chatId, String text) {
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
         message.setText(text);
@@ -177,49 +171,6 @@ public class PollingClient extends TelegramLongPollingBot implements BotClient {
 
     @Override
     public void onUpdateReceived(Update update) {
-        this.handleUpdateAsync(update);
+        dispatcher.feedUpdate(update);
     }
-
-    public Future<?> handleUpdateAsync(Update update) {
-        return CompletableFuture
-                .runAsync(() -> processUpdate(update))
-                .whenComplete((v, ex) -> {
-                    if (ex != null) logger.error("Update crashed", ex);
-                    else logger.debug("Update {} processed", update.getUpdateId());
-                });
-    }
-
-    private void processUpdate(Update update) {
-        UpdateContext updateContext = new UpdateContext(update);
-        if (updateContext.getChatId() == null || updateContext.getUserId() == null) {
-            return;
-        }
-
-        StorageKey key = new StorageKey(updateContext.getChatId(), updateContext.getUserId());
-
-		FSMContext context = this.storage.getOrCreateContext(key);
-
-        for (Middleware middleware : this.middlewares) {
-            try {
-                if (!middleware.preHandle(update, context)){
-                    logger.debug("Middleware prevented handling update: {}", update);
-                    break;
-                }
-            } catch (Exception e) {
-                logger.error("Exception in middleware: ", e);
-                return;
-            }
-        }
-
-        for (Router router : this.routers) {
-            try {
-                if (router.routeUpdate(update, context)) {
-					return;
-				}
-            } catch (Exception e) {
-                logger.error("Exception in router {} while handling update: {}", router.getClass().getSimpleName(), update, e);
-            }
-        }
-    }
-
 }
