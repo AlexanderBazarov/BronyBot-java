@@ -1,14 +1,15 @@
 package ru.untitled_devs.bot.shared;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import ru.untitled_devs.bot.shared.localisation.LocalisationService;
 import ru.untitled_devs.bot.shared.localisation.MessageKey;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
-
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 public class LocalisationServiceTest {
 

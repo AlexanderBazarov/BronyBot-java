@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import ru.untitled_devs.core.fsm.context.DataKey;
 import ru.untitled_devs.core.fsm.context.FSMContext;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryStorageTest {

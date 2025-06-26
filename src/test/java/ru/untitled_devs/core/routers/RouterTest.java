@@ -3,8 +3,8 @@ package ru.untitled_devs.core.routers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ru.untitled_devs.core.fsm.states.State;
 import ru.untitled_devs.core.fsm.context.FSMContext;
+import ru.untitled_devs.core.fsm.states.State;
 import ru.untitled_devs.core.routers.handlers.Handler;
 
 import java.util.List;

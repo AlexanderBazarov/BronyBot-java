@@ -1,8 +1,12 @@
 package ru.untitled_devs.core.fsm.context;
+
 import ru.untitled_devs.core.fsm.states.DefaultStates;
 import ru.untitled_devs.core.fsm.states.State;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class FSMContext {
     private State state = DefaultStates.DEFAULT;

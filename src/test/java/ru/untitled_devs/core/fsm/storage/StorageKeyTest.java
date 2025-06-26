@@ -2,7 +2,8 @@ package ru.untitled_devs.core.fsm.storage;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class StorageKeyTest {
     int expectedChatId = 12345;

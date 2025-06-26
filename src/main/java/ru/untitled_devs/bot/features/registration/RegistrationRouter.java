@@ -1,4 +1,5 @@
 package ru.untitled_devs.bot.features.registration;
+
 import com.mongodb.client.model.geojson.Point;
 import com.mongodb.client.model.geojson.Position;
 import dev.morphia.Datastore;
@@ -14,7 +15,6 @@ import ru.untitled_devs.core.client.BotClient;
 import ru.untitled_devs.core.fsm.context.DataKey;
 import ru.untitled_devs.core.fsm.context.FSMContext;
 import ru.untitled_devs.core.routers.Router;
-import ru.untitled_devs.core.routers.filters.MessageFilter;
 import ru.untitled_devs.core.routers.handlers.MessageHandler;
 
 import java.io.IOException;

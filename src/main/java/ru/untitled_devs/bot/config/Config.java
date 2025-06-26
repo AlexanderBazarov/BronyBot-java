@@ -1,7 +1,5 @@
 package ru.untitled_devs.bot.config;
 
-import java.util.Objects;
-
 public final class Config {
 	private static BotConfig botConfig = new BotConfig();
 	private static MongoConfig mongoConfig = new MongoConfig();

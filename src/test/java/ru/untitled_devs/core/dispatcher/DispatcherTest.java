@@ -13,14 +13,12 @@ import ru.untitled_devs.core.fsm.storage.StorageKey;
 import ru.untitled_devs.core.routers.Router;
 
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import static org.awaitility.Awaitility.await;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
-import static org.awaitility.Awaitility.*;
 
 class DispatcherTest {
 	static Storage storage;

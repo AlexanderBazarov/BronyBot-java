@@ -12,7 +12,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public final class YandexGeocoder extends Geocoder {
 	private static ObjectMapper mapper = new ObjectMapper()

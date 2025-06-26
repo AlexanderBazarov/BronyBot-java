@@ -7,7 +7,7 @@ import org.bson.types.ObjectId;
 import java.util.List;
 import java.util.Optional;
 
-import static dev.morphia.query.filters.Filters.*;
+import static dev.morphia.query.filters.Filters.eq;
 
 public abstract class MongoRepo<T> implements BaseRepo<T, ObjectId>{
 	private final Class<T> objectClass;
