@@ -3,12 +3,11 @@ package ru.untitled_devs.bot.features.localisation;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import ru.untitled_devs.bot.shared.localisation.LocalisationService;
 import ru.untitled_devs.core.client.PollingClient;
 import ru.untitled_devs.core.fsm.context.DataKey;
 import ru.untitled_devs.core.fsm.context.FSMContext;
+import ru.untitled_devs.core.fsm.states.DefaultStates;
 import ru.untitled_devs.core.routers.Router;
 import ru.untitled_devs.core.routers.handlers.CallbackQueryHandler;
 import ru.untitled_devs.core.routers.handlers.MessageHandler;
@@ -23,12 +22,12 @@ public class LocalisationRouter extends Router {
 
 	public LocalisationRouter(PollingClient bot) {
 		this.bot = bot;
+
 		this.registerHandlers();
 	}
 
 	private void registerHandlers() {
 		addHandler(LocalisationStates.START, new MessageHandler(this::askLang));
-		addHandler(LocalisationStates.START, new CallbackQueryHandler(this::askLangCallback));
 		addHandler(LocalisationStates.GETLANG, new CallbackQueryHandler(this::getLang));
 	}
 
@@ -66,6 +65,7 @@ public class LocalisationRouter extends Router {
 	private void getLang(CallbackQuery callback, FSMContext ctx) {
 		DataKey<Locale> key = DataKey.of("Lang", Locale.class);
 		ctx.setData(key, Locale.of(callback.getData()));
+		ctx.setState(DefaultStates.DEFAULT);
 	}
 
 }

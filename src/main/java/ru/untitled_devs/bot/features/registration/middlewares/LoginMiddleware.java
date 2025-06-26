@@ -11,7 +11,6 @@ public class LoginMiddleware implements Middleware {
 	@Override
 	public boolean preHandle(Update update, FSMContext ctx) {
 		State state = ctx.getState();
-
 		if (! StatesGroup.contains(RegistrationStates.class, state)) {
 			ctx.setState(RegistrationStates.START);
 		}
