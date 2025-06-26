@@ -18,31 +18,36 @@ import ru.untitled_devs.bot.features.start.StartRouter;
 import ru.untitled_devs.bot.shared.geocoder.Geocoder;
 import ru.untitled_devs.bot.shared.geocoder.yandex.YandexGeocoder;
 import ru.untitled_devs.core.client.PollingClient;
+import ru.untitled_devs.core.dispatcher.Dispatcher;
 import ru.untitled_devs.core.fsm.storage.InMemoryStorage;
 
 public class Main {
-    static InMemoryStorage storage = new InMemoryStorage();
-    protected static final Logger logger = LogManager.getLogger();
-	private static final Geocoder geocoder =
-		new YandexGeocoder(Config.getGeocodingConfig().getApiUrl(),
-			Config.getGeocodingConfig().getApiKey());
 
 
     public static void main(String[] args) {
-        try {
-			MongoClient client = MongoClients.create(Config.getMongoConfig().getMongoString());
-			Datastore datastore = Morphia.createDatastore(client, Config.getMongoConfig().getMongoDBName());
+		InMemoryStorage storage = new InMemoryStorage();
+		Logger logger = LogManager.getLogger();
+		Dispatcher dispatcher = new Dispatcher(storage, logger);
 
-            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+		MongoClient client = MongoClients.create(Config.getMongoConfig().getMongoString());
+		Datastore datastore = Morphia.createDatastore(client, Config.getMongoConfig().getMongoDBName());
+
+		Geocoder geocoder =
+			new YandexGeocoder(Config.getGeocodingConfig().getApiUrl(),
+				Config.getGeocodingConfig().getApiKey());
+
+
+		try {
+			TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
             PollingClient bot = new PollingClient(Config.getBotConfig().getBotToken(),
-				Config.getBotConfig().getBotName(), storage,logger);
+				Config.getBotConfig().getBotName(), dispatcher, logger);
 
-			bot.addMiddleware(new LocalisationMiddleware());
-			bot.addMiddleware(new LoginMiddleware());
+			dispatcher.addMiddleware(new LocalisationMiddleware());
+			dispatcher.addMiddleware(new LoginMiddleware());
 
-            bot.addRouter(new StartRouter(bot));
-			bot.addRouter(new RegistrationRouter(bot, datastore, geocoder));
-			bot.addRouter(new LocalisationRouter(bot));
+			dispatcher.addRouter(new StartRouter(bot));
+			dispatcher.addRouter(new RegistrationRouter(bot, datastore, geocoder));
+			dispatcher.addRouter(new LocalisationRouter(bot));
 
             botsApi.registerBot(bot);
         } catch (Exception e) {

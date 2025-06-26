@@ -4,6 +4,7 @@ import dev.morphia.Datastore;
 import org.junit.jupiter.api.Test;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.untitled_devs.bot.shared.geocoder.Geocoder;
 import ru.untitled_devs.bot.shared.models.Profile;
 import ru.untitled_devs.core.client.PollingClient;
 import ru.untitled_devs.core.fsm.context.DataKey;
@@ -17,7 +18,8 @@ class RegistrationRouterTest {
 	private RegistrationRouter getRegistrationRouter(){
 		Datastore datastore = mock(Datastore.class);
 		PollingClient bot = mock(PollingClient.class);
-		return new RegistrationRouter(bot, datastore);
+		Geocoder geocoder = mock(Geocoder.class);
+		return new RegistrationRouter(bot, datastore, geocoder);
 	}
 
 	@Test
