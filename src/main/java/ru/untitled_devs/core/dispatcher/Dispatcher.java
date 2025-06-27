@@ -1,6 +1,5 @@
 package ru.untitled_devs.core.dispatcher;
 
-
 import org.apache.logging.log4j.Logger;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.untitled_devs.core.context.UpdateContext;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class Dispatcher {
 	NamedThreadFactory namedThreadFactory = new NamedThreadFactory("ExecutorThread-");
@@ -41,12 +39,12 @@ public class Dispatcher {
 		this.middlewares.add(middleware);
 	}
 
-	public Future<?> feedUpdate(Update update) {
-		return CompletableFuture
+	public void feedUpdate(Update update) {
+		CompletableFuture
 			.runAsync(() -> processUpdate(update), excutor)
 			.whenComplete((v, ex) -> {
 				if (ex != null) logger.error("Update crashed", ex);
-				else logger.debug("Update {} processed", update.getUpdateId());
+				else logger.info("Update {} processed", update.getUpdateId());
 			});
 	}
 
