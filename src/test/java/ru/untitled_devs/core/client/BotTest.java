@@ -1,6 +1,7 @@
 package ru.untitled_devs.core.client;
 
 import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
@@ -25,23 +26,23 @@ import static org.mockito.Mockito.*;
 
 class BotTest {
 
-    private PollingClient bot;
-    private Storage storage;
-    private Router router;
-	private Dispatcher dispatcher;
+    private static PollingClient bot;
+    private static Storage storage;
+    private static Router router;
+	private static Dispatcher dispatcher;
 
     @BeforeEach
-    void setUp() {
+	void setUp() {
         storage = mock(Storage.class);
         router = mock(Router.class);
 		dispatcher = mock(Dispatcher.class);
         Logger logger = mock(Logger.class);
-        bot = new PollingClient("testToken", "testUsername", dispatcher, logger);
+        bot = spy(new PollingClient("testToken", "testUsername", dispatcher, logger));
+
     }
 
     @Test
     void sendMessageSuccessfullySendsMessage() throws TelegramApiException {
-        bot = spy(bot);
         doReturn(null).when(bot).execute(any(SendMessage.class));
 
         assertDoesNotThrow(
@@ -54,7 +55,7 @@ class BotTest {
 
     @Test
     void sendMessageSuccessfullySendsMessageWithMarkup() throws TelegramApiException {
-        bot = spy(bot);
+
         doReturn(null).when(bot).execute(any(SendMessage.class));
 
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
@@ -69,7 +70,6 @@ class BotTest {
 
     @Test
     void sendMessageHandlesTelegramApiException() throws TelegramApiException {
-        bot = spy(bot);
         doThrow(new TelegramApiException("API error")).when(bot).execute(any(SendMessage.class));
 
         assertDoesNotThrow(
@@ -82,7 +82,6 @@ class BotTest {
 
     @Test
     void banChatMemberSuccessfullyBansUser() throws TelegramApiException {
-        bot = spy(bot);
         doReturn(null).when(bot).execute(any(BanChatMember.class));
 
         assertDoesNotThrow(
@@ -95,7 +94,6 @@ class BotTest {
 
     @Test
     void banChatMemberHandlesTelegramApiException() throws TelegramApiException {
-        bot = spy(bot);
         doThrow(new TelegramApiException("API error")).when(bot).execute(any(BanChatMember.class));
 
         assertDoesNotThrow(
@@ -108,7 +106,6 @@ class BotTest {
 
     @Test
     void seditMessageSuccessfullyEditMessageText() throws TelegramApiException {
-        bot = spy(bot);
         doReturn(null).when(bot).execute(any(EditMessageText.class));
 
         assertDoesNotThrow(
@@ -121,7 +118,6 @@ class BotTest {
 
     @Test
     void EditMessageMarkupSuccessfullyEditMessageMarkup() throws TelegramApiException {
-        bot = spy(bot);
         doReturn(null).when(bot).execute(any(EditMessageReplyMarkup.class));
 
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
@@ -136,7 +132,6 @@ class BotTest {
 
     @Test
     void deleteMessageSuccessfullyDeletesMessage() throws TelegramApiException {
-        bot = spy(bot);
         doReturn(null).when(bot).execute(any(DeleteMessage.class));
 
         assertDoesNotThrow(
@@ -149,7 +144,6 @@ class BotTest {
 
     @Test
     void sendPhotoSuccessfullySendsPhoto() throws TelegramApiException {
-        bot = spy(bot);
         doReturn(null).when(bot).execute(any(SendPhoto.class));
 
         byte[] photo = Base64.getDecoder().decode(
@@ -166,7 +160,6 @@ class BotTest {
 
 	@Test
 	void answerCallbackQuerySuccessfullyAnswersCallback() throws TelegramApiException {
-		bot = spy(bot);
 		doReturn(null).when(bot).execute(any(AnswerCallbackQuery.class));
 
 		assertDoesNotThrow(
