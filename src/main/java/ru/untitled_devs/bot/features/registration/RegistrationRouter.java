@@ -42,9 +42,10 @@ public final class RegistrationRouter extends Router {
 		this.addHandler(RegistrationStates.FINISH, new MessageHandler(this::finishRegistration));
     }
 
-	Locale loc = Locale.forLanguageTag("ru-RU");
-
     private void startRegistration(Message message, FSMContext ctx) {
+		DataKey<Locale> langKey = DataKey.of("lang", Locale.class);
+		Locale loc = ctx.getData(langKey);
+
 		this.bot.sendMessage(message.getChatId(),
 			LocalisationService.getMessage(MessageKey.NOT_REGISTERED, loc));
 
@@ -59,6 +60,9 @@ public final class RegistrationRouter extends Router {
     }
 
 	private void getName(Message message, FSMContext ctx) {
+		DataKey<Locale> langKey = DataKey.of("lang", Locale.class);
+		Locale loc = ctx.getData(langKey);
+
 		String name = message.getText().strip();
 
 		DataKey<Profile> key = DataKey.of("RegistrationData", Profile.class);
@@ -74,6 +78,9 @@ public final class RegistrationRouter extends Router {
 	}
 
 	private void getAge(Message message, FSMContext ctx) {
+		DataKey<Locale> langKey = DataKey.of("lang", Locale.class);
+		Locale loc = ctx.getData(langKey);
+
 		int age;
 
 		try {
@@ -107,6 +114,9 @@ public final class RegistrationRouter extends Router {
 	}
 
 	private void getLocation(Message message, FSMContext ctx) {
+		DataKey<Locale> langKey = DataKey.of("lang", Locale.class);
+		Locale loc = ctx.getData(langKey);
+
 		String location;
 		Coordinates coords;
 
@@ -171,6 +181,9 @@ public final class RegistrationRouter extends Router {
 	}
 
 	private void finishRegistration(Message message, FSMContext ctx) {
+		DataKey<Locale> langKey = DataKey.of("lang", Locale.class);
+		Locale loc = ctx.getData(langKey);
+
 		long telegramId = message.getChatId();
 
 		DataKey<Profile> key = DataKey.of("RegistrationData", Profile.class);
