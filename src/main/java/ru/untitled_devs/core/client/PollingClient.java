@@ -1,6 +1,5 @@
 package ru.untitled_devs.core.client;
 
-
 import org.apache.logging.log4j.Logger;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
