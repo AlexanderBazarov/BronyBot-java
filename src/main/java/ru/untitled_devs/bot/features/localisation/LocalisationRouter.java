@@ -63,7 +63,7 @@ public class LocalisationRouter extends Router {
 	}
 
 	private void getLang(CallbackQuery callback, FSMContext ctx) {
-		DataKey<Locale> key = DataKey.of("Lang", Locale.class);
+		DataKey<Locale> key = DataKey.of("lang", Locale.class);
 		ctx.setData(key, Locale.of(callback.getData()));
 		ctx.setState(DefaultStates.DEFAULT);
 	}
