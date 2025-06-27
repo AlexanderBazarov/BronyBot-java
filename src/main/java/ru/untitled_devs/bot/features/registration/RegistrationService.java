@@ -9,8 +9,8 @@ import ru.untitled_devs.bot.shared.repositories.UserRepo;
 public final class RegistrationService {
 	private final Datastore datastore;
 
-	private UserRepo userRepo;
-	private ProfileRepo profileRepo;
+	private final UserRepo userRepo;
+	private final ProfileRepo profileRepo;
 
 	public RegistrationService(Datastore datastore) {
 		this.datastore = datastore;

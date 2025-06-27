@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 public final class YandexGeocoder extends Geocoder {
-	private static ObjectMapper mapper = new ObjectMapper()
+	private static final ObjectMapper mapper = new ObjectMapper()
 		.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
 
 	public YandexGeocoder(String apiUrl, String apiKey) {
