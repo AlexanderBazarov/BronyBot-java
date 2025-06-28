@@ -52,7 +52,7 @@ public class Dispatcher {
 
 	public void processUpdate(Update update) {
 		UpdateContext updateContext = new UpdateContext(update);
-		if (updateContext.getChatId() == null || updateContext.getUserId() == null) {
+		if (updateContext.getChatId() == null) {
 			return;
 		}
 
