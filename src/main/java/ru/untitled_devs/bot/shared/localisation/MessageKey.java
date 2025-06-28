@@ -23,6 +23,7 @@ public enum MessageKey {
 	SUCCESSFUL_REGISTRATION("successful_registration"),
 	SUCCESSFUL_EDITED_PROFILE("successful_edited_profile"),
 	CREATE_ACCOUNT_AGAIN("create_account_again"),
+	PROFILE_PREVIEW("profile_preview"),
 
 	MAIN_MENU("main_menu"),
 
@@ -98,7 +99,10 @@ public enum MessageKey {
 	INCORRECT_LOCATION_MESSAGE("incorrect_location_message"),
 
 	NICE_TO_MEET_YOU("nice_to_meet_you"),
-	SELECT_LANGUAGE("select_language");
+	SELECT_LANGUAGE("select_language"),
+
+	PROFILE_MESSAGE("profile_message");
+
 
 	private final String key;
 	MessageKey(String key) { this.key = key; }

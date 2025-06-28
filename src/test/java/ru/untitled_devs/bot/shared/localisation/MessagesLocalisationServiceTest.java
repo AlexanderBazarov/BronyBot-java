@@ -1,9 +1,7 @@
-package ru.untitled_devs.bot.shared;
+package ru.untitled_devs.bot.shared.localisation;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
-import ru.untitled_devs.bot.shared.localisation.LocalisationService;
-import ru.untitled_devs.bot.shared.localisation.MessageKey;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -11,10 +9,10 @@ import java.util.ResourceBundle;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-public class LocalisationServiceTest {
+public class MessagesLocalisationServiceTest {
 
 	@Test
-	void getMessageReturnsCorrectMessageWithoutArgs() {
+	void getLocalReturnsCorrectMessageWithoutArgs() {
 		Locale testLocale = Locale.ENGLISH;
 		String testKey = "test.key";
 		String testPattern = "Hello!";
@@ -28,13 +26,13 @@ public class LocalisationServiceTest {
 		try (MockedStatic<ResourceBundle> bundleMock = mockStatic(ResourceBundle.class)) {
 			bundleMock.when(() -> ResourceBundle.getBundle(anyString(), eq(testLocale))).thenReturn(fakeBundle);
 
-			String message = LocalisationService.getMessage(key, testLocale);
+			String message = MessagesLocalisationService.getLocal(key, testLocale);
 			assertEquals("Hello!", message);
 		}
 	}
 
 	@Test
-	void getMessageReturnsCorrectMessageWithArgs() {
+	void getLocalReturnsCorrectMessageWithArgs() {
 		Locale testLocale = Locale.ENGLISH;
 		String testKey = "test.key";
 		String testPattern = "Hello, {0}!";
@@ -48,13 +46,13 @@ public class LocalisationServiceTest {
 		try (MockedStatic<ResourceBundle> bundleMock = mockStatic(ResourceBundle.class)) {
 			bundleMock.when(() -> ResourceBundle.getBundle(anyString(), eq(testLocale))).thenReturn(fakeBundle);
 
-			String message = LocalisationService.getMessage(key, testLocale, "World");
+			String message = MessagesLocalisationService.getLocal(key, testLocale, "World");
 			assertEquals("Hello, World!", message);
 		}
 	}
 
 	@Test
-	void getMessageReturnsQuestionMarksWhenGotMissingKey() {
+	void getLocalReturnsQuestionMarksWhenGotMissingKey() {
 		Locale testLocale = Locale.ENGLISH;
 		String invalidKey = "test.hello";
 		String testKey = "test.key";
@@ -69,14 +67,13 @@ public class LocalisationServiceTest {
 		try (MockedStatic<ResourceBundle> bundleMock = mockStatic(ResourceBundle.class)) {
 			bundleMock.when(() -> ResourceBundle.getBundle(anyString(), eq(testLocale))).thenReturn(fakeBundle);
 
-			String message = LocalisationService.getMessage(key, testLocale);
+			String message = MessagesLocalisationService.getLocal(key, testLocale);
 			assertEquals("???", message);
 		}
 	}
-
 
 	@Test
-	void getMessageReturnsQuestionMarksWhenGotMissingKeyWithArgs() {
+	void getLocalReturnsQuestionMarksWhenGotMissingKeyWithArgs() {
 		Locale testLocale = Locale.ENGLISH;
 		String invalidKey = "test.hello";
 		String testKey = "test.key";
@@ -91,8 +88,9 @@ public class LocalisationServiceTest {
 		try (MockedStatic<ResourceBundle> bundleMock = mockStatic(ResourceBundle.class)) {
 			bundleMock.when(() -> ResourceBundle.getBundle(anyString(), eq(testLocale))).thenReturn(fakeBundle);
 
-			String message = LocalisationService.getMessage(key, testLocale, "Test");
+			String message = MessagesLocalisationService.getLocal(key, testLocale, "Test");
 			assertEquals("???", message);
 		}
 	}
+
 }
