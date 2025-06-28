@@ -2,12 +2,14 @@ package ru.untitled_devs.bot.features.localisation;
 
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import ru.untitled_devs.core.client.PollingClient;
 import ru.untitled_devs.core.fsm.context.DataKey;
 import ru.untitled_devs.core.fsm.context.FSMContext;
 import ru.untitled_devs.core.fsm.states.DefaultStates;
+import ru.untitled_devs.core.fsm.states.State;
 import ru.untitled_devs.core.routers.Router;
 import ru.untitled_devs.core.routers.handlers.CallbackQueryHandler;
 import ru.untitled_devs.core.routers.handlers.MessageHandler;
@@ -64,8 +66,16 @@ public class LocalisationRouter extends Router {
 
 	private void getLang(CallbackQuery callback, FSMContext ctx) {
 		DataKey<Locale> key = DataKey.of("lang", Locale.class);
-		ctx.setData(key, Locale.of(callback.getData()));
-		ctx.setState(DefaultStates.DEFAULT);
+		ctx.setData(key, Locale.forLanguageTag(callback.getData()));
+
+		DataKey<Update> updateKey = DataKey.of("register:Update", Update.class);
+		DataKey<State> stateKey = DataKey.of("register:Update", State.class);
+
+		Update update = ctx.getData(updateKey);
+		State state = ctx.getData(stateKey);
+
+		ctx.setState(state);
+		bot.getDispatcher().processUpdate(update);
 	}
 
 }

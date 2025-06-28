@@ -1,6 +1,7 @@
 package ru.untitled_devs.bot.features.registration;
 
 import dev.morphia.Datastore;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -10,22 +11,29 @@ import ru.untitled_devs.core.client.PollingClient;
 import ru.untitled_devs.core.fsm.context.DataKey;
 import ru.untitled_devs.core.fsm.context.FSMContext;
 
+import java.util.Locale;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class RegistrationRouterTest {
-	private RegistrationRouter getRegistrationRouter(){
+	RegistrationRouter router;
+	FSMContext ctx;
+
+	@BeforeEach
+	public void getRegistrationRouter(){
 		Datastore datastore = mock(Datastore.class);
 		PollingClient bot = mock(PollingClient.class);
 		Geocoder geocoder = mock(Geocoder.class);
-		return new RegistrationRouter(bot, datastore, geocoder);
+		router =  new RegistrationRouter(bot, datastore, geocoder);
+		ctx = mock(FSMContext.class);
+		DataKey<Locale> langKey = DataKey.of("lang", Locale.class);
+		when(ctx.getData(langKey)).thenReturn(Locale.forLanguageTag("en-US"));
 	}
 
 	@Test
 	void getAgeGotDigitString() {
-		RegistrationRouter router = getRegistrationRouter();
-
 		Message message = mock(Message.class);
 		when(message.getText()).thenReturn("15");
 
@@ -33,7 +41,7 @@ class RegistrationRouterTest {
 		when(update.hasMessage()).thenReturn(true);
 		when(update.getMessage()).thenReturn(message);
 
-		FSMContext ctx = mock(FSMContext.class);
+
 		when(ctx.getState()).thenReturn(RegistrationStates.AGE);
 
 		Profile profile = new Profile();
@@ -48,7 +56,6 @@ class RegistrationRouterTest {
 
 	@Test
 	void getAgeGotNotDigitString() {
-		RegistrationRouter router = getRegistrationRouter();
 
 		Message message = mock(Message.class);
 		when(message.getText()).thenReturn("abcd");
@@ -57,7 +64,6 @@ class RegistrationRouterTest {
 		when(update.hasMessage()).thenReturn(true);
 		when(update.getMessage()).thenReturn(message);
 
-		FSMContext ctx = mock(FSMContext.class);
 		when(ctx.getState()).thenReturn(RegistrationStates.AGE);
 
 		assertThrows(IllegalArgumentException.class,
@@ -67,7 +73,6 @@ class RegistrationRouterTest {
 
 	@Test
 	void getAgeGoTooHugeAge() {
-		RegistrationRouter router = getRegistrationRouter();
 
 		Message message = mock(Message.class);
 		when(message.getText()).thenReturn("120");
@@ -76,7 +81,6 @@ class RegistrationRouterTest {
 		when(update.hasMessage()).thenReturn(true);
 		when(update.getMessage()).thenReturn(message);
 
-		FSMContext ctx = mock(FSMContext.class);
 		when(ctx.getState()).thenReturn(RegistrationStates.AGE);
 
 		assertThrows(IllegalArgumentException.class,
@@ -86,7 +90,6 @@ class RegistrationRouterTest {
 
 	@Test
 	void getAgeGoTooSmallAge() {
-		RegistrationRouter router = getRegistrationRouter();
 
 		Message message = mock(Message.class);
 		when(message.getText()).thenReturn("2");
@@ -95,7 +98,6 @@ class RegistrationRouterTest {
 		when(update.hasMessage()).thenReturn(true);
 		when(update.getMessage()).thenReturn(message);
 
-		FSMContext ctx = mock(FSMContext.class);
 		when(ctx.getState()).thenReturn(RegistrationStates.AGE);
 
 		assertThrows(IllegalArgumentException.class,
