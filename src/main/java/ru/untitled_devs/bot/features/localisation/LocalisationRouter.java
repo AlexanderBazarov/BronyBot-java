@@ -54,8 +54,11 @@ public class LocalisationRouter extends Router {
 
 		markup.setKeyboard(rows);
 
-		bot.sendMessage(message.getChatId(), "Please, setup Your Language", markup);
+		Message sentMessage = bot.sendMessage(message.getChatId(), "Please, setup Your Language", markup);
 
+		DataKey<Integer> messageKey = DataKey.of("getLangMessageId", Integer.class);
+
+		ctx.setData(messageKey, sentMessage.getMessageId());
 		ctx.setState(LocalisationStates.GETLANG);
 	}
 
@@ -68,6 +71,11 @@ public class LocalisationRouter extends Router {
 
 		Update update = ctx.getData(updateKey);
 		State state = ctx.getData(stateKey);
+
+		DataKey<Integer> messageKey = DataKey.of("getLangMessageId", Integer.class);
+		int langMessageId = ctx.getData(messageKey);
+
+		bot.deleteMessage(callback.getMessage().getChatId(), langMessageId);
 
 		ctx.setState(state);
 		bot.getDispatcher().processUpdate(update);
