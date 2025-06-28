@@ -26,8 +26,7 @@ public class UpdateContext {
             chatId = update.getEditedChannelPost().getChatId();
             userId = update.getEditedChannelPost().getFrom().getId();
         } else {
-            chatId = null;
-            userId = null;
+			throw new IllegalArgumentException();
         }
     }
 
