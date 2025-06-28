@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class UserQueueExecutor {
+public class UserQueueExecutor implements UserScopedExecutor{
 	NamedThreadFactory namedThreadFactory = new NamedThreadFactory("ExecutorThread-");
 	private final ExecutorService executor;
 	private final Map<Long, Queue<Runnable>> queues = new ConcurrentHashMap<>();
@@ -23,6 +23,7 @@ public class UserQueueExecutor {
 		this.logger = logger;
 	}
 
+	@Override
 	public void submit(long chatId, Runnable task) {
 		queues.computeIfAbsent(chatId, __ -> new ConcurrentLinkedQueue<>()).add(task);
 		tryStart(chatId);
