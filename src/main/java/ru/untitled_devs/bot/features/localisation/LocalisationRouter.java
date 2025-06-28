@@ -8,7 +8,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import ru.untitled_devs.core.client.PollingClient;
 import ru.untitled_devs.core.fsm.context.DataKey;
 import ru.untitled_devs.core.fsm.context.FSMContext;
-import ru.untitled_devs.core.fsm.states.DefaultStates;
 import ru.untitled_devs.core.fsm.states.State;
 import ru.untitled_devs.core.routers.Router;
 import ru.untitled_devs.core.routers.handlers.CallbackQueryHandler;
@@ -58,10 +57,6 @@ public class LocalisationRouter extends Router {
 		bot.sendMessage(message.getChatId(), "Please, setup Your Language", markup);
 
 		ctx.setState(LocalisationStates.GETLANG);
-	}
-
-	private void askLangCallback(CallbackQuery callback, FSMContext ctx) {
-
 	}
 
 	private void getLang(CallbackQuery callback, FSMContext ctx) {
