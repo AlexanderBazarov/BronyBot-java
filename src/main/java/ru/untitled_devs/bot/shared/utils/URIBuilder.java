@@ -28,7 +28,7 @@ public class URIBuilder {
 		}
 
 		String query = params.entrySet().stream()
-			.map((e) -> urlEncode(e.getKey()) + "=" + urlEncode(e.getValue()))
+			.map(e -> urlEncode(e.getKey()) + "=" + urlEncode(e.getValue()))
 			.collect(Collectors.joining("&"));
 
 		String separator = baseUrl.contains("?") ? "&" : "?";
@@ -61,10 +61,10 @@ public class URIBuilder {
 
 	private HashMap<String, String> parseParams(String queryString) {
 		return Arrays.stream(queryString.split("&"))
-			.map((pair) -> pair.split("=", 2))
+			.map(pair -> pair.split("=", 2))
 			.collect(Collectors.toMap(
-				(arr) -> urlDecode(arr[0]),
-				(arr) -> arr.length > 1 ? urlDecode(arr[1]) : "",
+				arr -> urlDecode(arr[0]),
+				arr -> arr.length > 1 ? urlDecode(arr[1]) : "",
 				(first, second) -> second,
 				HashMap::new
 			));
