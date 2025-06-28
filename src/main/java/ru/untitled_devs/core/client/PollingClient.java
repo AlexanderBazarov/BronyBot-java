@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
@@ -55,16 +56,17 @@ public class PollingClient extends TelegramLongPollingBot implements BotClient {
         }
     }
 
-    public void sendMessage(long chatId, String text, ReplyKeyboard replyKeyboard) {
+    public Message sendMessage(long chatId, String text, ReplyKeyboard replyKeyboard) {
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
         message.setText(text);
         message.setReplyMarkup(replyKeyboard);
 
         try {
-            execute(message);
+            return execute(message);
         } catch (TelegramApiException e) {
             this.logger.error(e.getMessage());
+			return null;
         }
     }
 
