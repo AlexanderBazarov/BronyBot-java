@@ -3,23 +3,18 @@ package ru.untitled_devs.core.dispatcher;
 import org.apache.logging.log4j.Logger;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.untitled_devs.core.context.UpdateContext;
+import ru.untitled_devs.core.executor.UserQueueExecutor;
 import ru.untitled_devs.core.fsm.context.FSMContext;
 import ru.untitled_devs.core.fsm.storage.Storage;
 import ru.untitled_devs.core.fsm.storage.StorageKey;
 import ru.untitled_devs.core.middlewares.Middleware;
 import ru.untitled_devs.core.routers.Router;
-import ru.untitled_devs.core.utils.NamedThreadFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Dispatcher {
-	NamedThreadFactory namedThreadFactory = new NamedThreadFactory("ExecutorThread-");
-	ExecutorService excutor = Executors.newFixedThreadPool(10, namedThreadFactory);
-
+	private final UserQueueExecutor userQueueExecutor;
 	private final List<Router> routers = new ArrayList<>();
 	private final Storage storage;
 	private final List<Middleware> middlewares = new ArrayList<>();
@@ -29,6 +24,8 @@ public class Dispatcher {
 	public Dispatcher(Storage storage, Logger logger) {
 		this.storage = storage;
 		this.logger = logger;
+
+		userQueueExecutor = new UserQueueExecutor(10, logger);
 	}
 
 	public void addRouter(Router router) {
@@ -40,12 +37,17 @@ public class Dispatcher {
 	}
 
 	public void feedUpdate(Update update) {
-		CompletableFuture
-			.runAsync(() -> processUpdate(update), excutor)
-			.whenComplete((v, ex) -> {
-				if (ex != null) logger.error("Update crashed", ex);
-				else logger.info("Update {} processed", update.getUpdateId());
-			});
+		UpdateContext updateContext = new UpdateContext(update);
+		long chatId = updateContext.getChatId();
+
+		userQueueExecutor.submit(chatId, () -> {
+			try {
+				processUpdate(update);
+				logger.info("Update {} processed", update.getUpdateId());
+			} catch (Exception ex) {
+				logger.error("Update crashed", ex);
+			}
+		});
 	}
 
 	public void processUpdate(Update update) {
