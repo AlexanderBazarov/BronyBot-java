@@ -22,7 +22,7 @@ public final class YandexGeocoder extends Geocoder {
 	}
 
 	@Override
-	public Coordinates getPlaceCoords(String name) throws IllegalArgumentException, IOException {
+	public Coordinates getPlaceCoords(String name) throws IOException, IllegalArgumentException {
 		URIBuilder builder = new URIBuilder(apiUrl);
 		builder.addParam("apikey", apiKey);
 		builder.addParam("geocode", name);
