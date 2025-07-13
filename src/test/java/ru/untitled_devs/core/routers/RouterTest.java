@@ -3,6 +3,7 @@ package ru.untitled_devs.core.routers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.untitled_devs.core.context.UpdateContext;
 import ru.untitled_devs.core.fsm.context.FSMContext;
 import ru.untitled_devs.core.fsm.states.State;
 import ru.untitled_devs.core.routers.handlers.Handler;
@@ -15,16 +16,16 @@ import static org.mockito.Mockito.*;
 
 class RouterTest {
 
-    private Router router;
+    private UpdateRouter router;
     private FSMContext ctx;
-    private Update update;
+    private UpdateContext update;
     private State state;
 
     @BeforeEach
     void setup() {
-        router = new Router();
+        router = new UpdateRouter();
         ctx = mock(FSMContext.class);
-        update = mock(Update.class);
+        update = mock(UpdateContext.class);
         state = new State("TEST");
         when(ctx.getState()).thenReturn(state);
     }
@@ -37,7 +38,7 @@ class RouterTest {
         Map<State, List<Handler>> handlers = router.getHandlers();
         assertTrue(handlers.containsKey(state));
         assertEquals(1, handlers.get(state).size());
-        assertSame(handler, handlers.get(state).get(0));
+        assertSame(handler, handlers.get(state).getFirst());
     }
 
     @Test

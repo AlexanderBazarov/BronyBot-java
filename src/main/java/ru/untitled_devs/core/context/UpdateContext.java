@@ -1,44 +1,39 @@
 package ru.untitled_devs.core.context;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
+import java.util.Locale;
 
-public class UpdateContext {
-    private final Update update;
-    private final Long chatId;
-    private final Long userId;
+public abstract class UpdateContext {
+	protected final Update update;
 
-    public UpdateContext(Update update) {
-        this.update = update;
+	public UpdateContext(Update update) {
+		this.update = update;
+	}
 
-        if (update.hasMessage()) {
-            chatId = update.getMessage().getChatId();
-            userId = update.getMessage().getFrom().getId();
-        } else if (update.hasCallbackQuery()) {
-            chatId = update.getCallbackQuery().getMessage().getChatId();
-            userId = update.getCallbackQuery().getFrom().getId();
-        } else if (update.hasEditedMessage()) {
-            chatId = update.getEditedMessage().getChatId();
-            userId = update.getEditedMessage().getFrom().getId();
-        } else if (update.hasChannelPost()) {
-            chatId = update.getChannelPost().getChatId();
-            userId = update.getChannelPost().getFrom().getId();
-        } else if (update.hasEditedChannelPost()) {
-            chatId = update.getEditedChannelPost().getChatId();
-            userId = update.getEditedChannelPost().getFrom().getId();
-        } else {
-			throw new IllegalArgumentException();
-        }
-    }
+	public abstract Long getChatId();
+	public abstract Long getUserId();
+	public abstract String getUsername();
+	public abstract String getText();
+	public abstract Locale getLocale();
 
-    public Long getChatId() {
-        return chatId;
-    }
+	public boolean isCommand() {
+		return getText() != null && getText().startsWith("/");
+	}
 
-    public Long getUserId() {
-        return userId;
-    }
+	public String getCommand() {
+		if (!isCommand()) return null;
+		return getText().split(" ")[0];
+	}
 
-    public Update getUpdate() {
-        return update;
-    }
+	public Update getUpdate() {
+		return update;
+	}
+
+	public boolean hasMessage() {
+		return false;
+	}
+
+	public boolean hasCallbackQuery() {
+		return false;
+	}
 }
