@@ -2,14 +2,14 @@ package ru.untitled_devs.core.utils;
 
 import org.apache.tika.Tika;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.UUID;
 
 public class FileUtils {
     private static final Tika tika = new Tika();
 
-    public static String getImageFileNameWithExtension(byte[] data) {
-        String mimeType = tika.detect(data);
-
+    private static String parseMimeExt(String mimeType) {
         if (mimeType == null || !mimeType.startsWith("image/")) {
             throw new IllegalArgumentException("Provided file is not an image: " + mimeType);
         }
@@ -22,6 +22,26 @@ public class FileUtils {
             default -> "";
         };
 
-        return UUID.randomUUID() + ext;
+        return ext;
     }
+
+	public static String getImageFileNameWithExtension(byte[] data) {
+		String mimeType = tika.detect(data);
+		return UUID.randomUUID() + parseMimeExt(mimeType);
+	}
+
+	public static String getImageFileNameWithExtension(InputStream data) throws IOException {
+		String mimeType = tika.detect(data);
+		return UUID.randomUUID() + parseMimeExt(mimeType);
+	}
+
+	public static String getImageFileExtension(byte[] data) {
+		String mimeType = tika.detect(data);
+		return parseMimeExt(mimeType);
+	}
+
+	public static String getImageFileExtension(InputStream data) throws IOException {
+		String mimeType = tika.detect(data);
+		return parseMimeExt(mimeType);
+	}
 }
