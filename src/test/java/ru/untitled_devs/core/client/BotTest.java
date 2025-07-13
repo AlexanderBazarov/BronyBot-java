@@ -15,7 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.untitled_devs.core.dispatcher.Dispatcher;
 import ru.untitled_devs.core.fsm.storage.Storage;
-import ru.untitled_devs.core.routers.Router;
+import ru.untitled_devs.core.routers.UpdateRouter;
 
 import java.util.Base64;
 
@@ -27,13 +27,13 @@ class BotTest {
 
     private static PollingClient bot;
     private static Storage storage;
-    private static Router router;
+    private static UpdateRouter router;
 	private static Dispatcher dispatcher;
 
     @BeforeEach
 	void setUp() {
         storage = mock(Storage.class);
-        router = mock(Router.class);
+        router = mock(UpdateRouter.class);
 		dispatcher = mock(Dispatcher.class);
         Logger logger = mock(Logger.class);
         bot = spy(new PollingClient("testToken", "testUsername", dispatcher, logger));

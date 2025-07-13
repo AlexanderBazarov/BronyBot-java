@@ -3,6 +3,7 @@ package ru.untitled_devs.core.client;
 import org.apache.logging.log4j.Logger;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
+import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.BanChatMember;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -15,6 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.api.objects.File;
 import ru.untitled_devs.core.dispatcher.Dispatcher;
 
 import java.io.ByteArrayInputStream;
@@ -44,15 +46,16 @@ public class PollingClient extends TelegramLongPollingBot implements BotClient {
 		return dispatcher;
 	}
 
-	public void sendMessage(long chatId, String text) {
+	public Message sendMessage(long chatId, String text) {
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
         message.setText(text);
 
         try {
-            execute(message);
+            return execute(message);
         } catch (TelegramApiException e) {
             this.logger.error(e.getMessage());
+			return null;
         }
     }
 
@@ -113,7 +116,7 @@ public class PollingClient extends TelegramLongPollingBot implements BotClient {
     }
 
     @Override
-    public void sendPhoto(long chatId, String caption, byte[] photo) {
+    public Message sendPhoto(long chatId, String caption, byte[] photo) {
         SendPhoto sendPhoto = new SendPhoto();
         sendPhoto.setChatId(chatId);
         sendPhoto.setCaption(caption);
@@ -122,11 +125,30 @@ public class PollingClient extends TelegramLongPollingBot implements BotClient {
         sendPhoto.setPhoto(file);
 
         try {
-            execute(sendPhoto);
+            return execute(sendPhoto);
         } catch (TelegramApiException e) {
             this.logger.error(e.getMessage());
+			return null;
         }
     }
+
+	@Override
+	public Message sendPhoto(long chatId, String caption, byte[] photo, ReplyKeyboard replyKeyboard) {
+		SendPhoto sendPhoto = new SendPhoto();
+		sendPhoto.setChatId(chatId);
+		sendPhoto.setCaption(caption);
+		sendPhoto.setReplyMarkup(replyKeyboard);
+
+		InputFile file = new InputFile(new ByteArrayInputStream(photo), getImageFileNameWithExtension(photo));
+		sendPhoto.setPhoto(file);
+
+		try {
+			return execute(sendPhoto);
+		} catch (TelegramApiException e) {
+			this.logger.error(e.getMessage());
+			return null;
+		}
+	}
 
     @Override
     public void answerCallbackQuery(String callbackQueryId, String text, boolean showAlert) {
@@ -157,8 +179,20 @@ public class PollingClient extends TelegramLongPollingBot implements BotClient {
         } catch (TelegramApiException e) {
             System.err.println(e.getMessage());
         }
-
     }
+
+	@Override
+	public File getFile(String fileId) {
+		GetFile getFile = new GetFile();
+		getFile.setFileId(fileId);
+
+		try {
+			return execute(getFile);
+		} catch (TelegramApiException e) {
+			this.logger.error(e.getMessage());
+			return null;
+		}
+	}
 
     @Override
     public void onUpdateReceived(Update update) {
