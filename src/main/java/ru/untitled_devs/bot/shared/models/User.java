@@ -6,7 +6,7 @@ import dev.morphia.annotations.Reference;
 import org.bson.types.ObjectId;
 
 @Entity("Accounts")
-public final class User implements Model{
+public final class User {
     @Id
     private ObjectId id;
 
