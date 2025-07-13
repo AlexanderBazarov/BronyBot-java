@@ -3,14 +3,17 @@ package ru.untitled_devs.core.dispatcher;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
+import ru.untitled_devs.core.context.UpdateContext;
 import ru.untitled_devs.core.fsm.context.FSMContext;
 import ru.untitled_devs.core.fsm.storage.Storage;
 import ru.untitled_devs.core.fsm.storage.StorageKey;
-import ru.untitled_devs.core.routers.Router;
+import ru.untitled_devs.core.routers.UpdateRouter;
+import ru.untitled_devs.core.routers.scenes.SceneManager;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -22,16 +25,18 @@ import static org.mockito.Mockito.*;
 
 class DispatcherTest {
 	static Storage storage;
-	static Router router;
+	static UpdateRouter router;
 	static Logger logger;
 	static Dispatcher dispatcher;
+	static SceneManager sceneManager;
 
 	@BeforeAll
 	static void setup() {
 		storage = mock(Storage.class);
-		router = mock(Router.class);
+		router = mock(UpdateRouter.class);
 		logger = mock(Logger.class);
-		dispatcher = new Dispatcher(storage, logger);
+		sceneManager = mock(SceneManager.class);
+		dispatcher = new Dispatcher(storage, logger, sceneManager);
 		dispatcher.addRouter(router);
 	}
 
@@ -57,10 +62,12 @@ class DispatcherTest {
 
 		dispatcher.feedUpdate(update);
 
+		ArgumentCaptor<UpdateContext> updateCtxCaptor = ArgumentCaptor.forClass(UpdateContext.class);
+
 		await().atMost(3, TimeUnit.SECONDS)
 			.pollInterval(10, TimeUnit.MILLISECONDS)
 			.untilAsserted(() ->
-			verify(router, times(1)).routeUpdate(update, context)
+			verify(router, times(1)).routeUpdate(updateCtxCaptor.capture(), eq(context))
 		);
 	}
 
@@ -88,10 +95,12 @@ class DispatcherTest {
 
 		dispatcher.feedUpdate(update);
 
+		ArgumentCaptor<UpdateContext> updateCtxCaptor = ArgumentCaptor.forClass(UpdateContext.class);
+
 		await().atMost(3, TimeUnit.SECONDS)
 			.pollInterval(10, TimeUnit.MILLISECONDS)
 			.untilAsserted(() ->
-				verify(router, times(1)).routeUpdate(update, context)
+				verify(router, times(1)).routeUpdate(updateCtxCaptor.capture(), eq(context))
 			);
 	}
 
@@ -118,10 +127,12 @@ class DispatcherTest {
 
 		dispatcher.feedUpdate(update);
 
+		ArgumentCaptor<UpdateContext> updateCtxCaptor = ArgumentCaptor.forClass(UpdateContext.class);
+
 		await().atMost(3, TimeUnit.SECONDS)
 			.pollInterval(10, TimeUnit.MILLISECONDS)
 			.untilAsserted(() ->
-				verify(router, times(1)).routeUpdate(update, context)
+				verify(router, times(1)).routeUpdate(updateCtxCaptor.capture(), eq(context))
 			);
 	}
 
@@ -148,10 +159,12 @@ class DispatcherTest {
 
 		dispatcher.feedUpdate(update);
 
+		ArgumentCaptor<UpdateContext> updateCtxCaptor = ArgumentCaptor.forClass(UpdateContext.class);
+
 		await().atMost(3, TimeUnit.SECONDS)
 			.pollInterval(10, TimeUnit.MILLISECONDS)
 			.untilAsserted(() ->
-				verify(router, times(1)).routeUpdate(update, context)
+				verify(router, times(1)).routeUpdate(updateCtxCaptor.capture(), eq(context))
 			);
 	}
 
@@ -178,10 +191,12 @@ class DispatcherTest {
 
 		dispatcher.feedUpdate(update);
 
+		ArgumentCaptor<UpdateContext> updateCtxCaptor = ArgumentCaptor.forClass(UpdateContext.class);
+
 		await().atMost(3, TimeUnit.SECONDS)
 			.pollInterval(10, TimeUnit.MILLISECONDS)
 			.untilAsserted(() ->
-				verify(router, times(1)).routeUpdate(update, context)
+				verify(router, times(1)).routeUpdate(updateCtxCaptor.capture(), eq(context))
 			);
 	}
 
