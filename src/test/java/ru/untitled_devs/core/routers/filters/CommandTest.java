@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.untitled_devs.core.context.UpdateContext;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,24 +13,28 @@ import static org.mockito.Mockito.when;
 
 public class CommandTest {
 
-    private Update updateMock;
+    private UpdateContext updateContextMock;
     private Message messageMock;
+	private Update updateMock;
 
     @BeforeEach
     void setUp() {
-        updateMock = mock(Update.class);
+        updateContextMock = mock(UpdateContext.class);
         messageMock = mock(Message.class);
-        when(updateMock.getMessage()).thenReturn(messageMock);
-        when(updateMock.hasMessage()).thenReturn(true);
+		updateMock = mock(Update.class);
+
+        when(updateContextMock.getUpdate()).thenReturn(updateMock);
+        when(updateContextMock.hasMessage()).thenReturn(true);
+		when(updateMock.getMessage()).thenReturn(messageMock);
     }
 
     @Test
     void checkReturnsTrueWhenCommandMatches() {
         Command command = new Command("test");
         when(messageMock.getText()).thenReturn("/test");
-        when(updateMock.hasMessage()).thenReturn(true);
+        when(updateContextMock.hasMessage()).thenReturn(true);
 
-        boolean result = command.check(updateMock);
+        boolean result = command.check(updateContextMock);
         assertTrue(result, "check() should return true when the text contains the command");
 
     }
@@ -38,9 +43,9 @@ public class CommandTest {
     void checkReturnsTrueWhenMultiwordCommandMatched() {
         Command command = new Command("test");
         when(messageMock.getText()).thenReturn("/test arg1 arg2");
-        when(updateMock.hasMessage()).thenReturn(true);
+        when(updateContextMock.hasMessage()).thenReturn(true);
 
-        boolean result = command.check(updateMock);
+        boolean result = command.check(updateContextMock);
         assertTrue(result, "check() should return true when the text contains the command");
     }
 
@@ -48,9 +53,9 @@ public class CommandTest {
     void checkReturnsTrueWhenCommandNotMatches() {
         Command command = new Command("start");
         when(messageMock.getText()).thenReturn("/test");
-        when(updateMock.hasMessage()).thenReturn(true);
+        when(updateContextMock.hasMessage()).thenReturn(true);
 
-        boolean result = command.check(updateMock);
+        boolean result = command.check(updateContextMock);
         assertFalse(result, "check() should return false when the text not contains the command");
 
     }
@@ -59,9 +64,9 @@ public class CommandTest {
     void checkReturnsTrueWhenMultiwordCommandNotMatched() {
         Command command = new Command("start");
         when(messageMock.getText()).thenReturn("/test arg1 arg2");
-        when(updateMock.hasMessage()).thenReturn(true);
+        when(updateContextMock.hasMessage()).thenReturn(true);
 
-        boolean result = command.check(updateMock);
+        boolean result = command.check(updateContextMock);
         assertFalse(result, "check() should return false when the text not contains the command");
     }
 

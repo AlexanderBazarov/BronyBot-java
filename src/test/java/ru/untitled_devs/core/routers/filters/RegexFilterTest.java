@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.untitled_devs.core.context.UpdateContext;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -11,25 +12,28 @@ import static org.mockito.Mockito.when;
 
 class RegexFilterTest {
 
-    private Update updateMock;
+    private UpdateContext updateContextMock;
     private Message messageMock;
+	private Update updateMock;
 
     @BeforeEach
     void setUp() {
-        updateMock = mock(Update.class);
+        updateContextMock = mock(UpdateContext.class);
         messageMock = mock(Message.class);
+		updateMock = mock(Update.class);
+		when(updateContextMock.hasMessage()).thenReturn(true);
+		when(updateContextMock.getUpdate()).thenReturn(updateMock);
         when(updateMock.getMessage()).thenReturn(messageMock);
-        when(updateMock.hasMessage()).thenReturn(true);
     }
 
     @Test
     void checkShouldReturnTrueWhenPatternMatchesText() {
         RegexFilter filter = new RegexFilter("hello");
-        when(updateMock.hasMessage()).thenReturn(true);
+        when(updateContextMock.hasMessage()).thenReturn(true);
         when(messageMock.hasText()).thenReturn(true);
         when(messageMock.getText()).thenReturn("say hello to the world");
 
-        boolean result = filter.check(updateMock);
+        boolean result = filter.check(updateContextMock);
 
         assertTrue(result, "check() should return true when the text contains the pattern");
     }
@@ -39,7 +43,7 @@ class RegexFilterTest {
         RegexFilter filter = new RegexFilter("\\d+");
         when(messageMock.getText()).thenReturn("no digits here");
 
-        boolean result = filter.check(updateMock);
+        boolean result = filter.check(updateContextMock);
 
         assertFalse(result, "check() should return false when the text does not contain the pattern");
     }
@@ -47,11 +51,11 @@ class RegexFilterTest {
     @Test
     void checkShouldHonorUnicodeFlagWhenMatchingUnicodeCharacters() {
         RegexFilter filter = new RegexFilter("\\p{L}+");
-        when(updateMock.hasMessage()).thenReturn(true);
+        when(updateContextMock.hasMessage()).thenReturn(true);
         when(messageMock.hasText()).thenReturn(true);
         when(messageMock.getText()).thenReturn("Скажи привет, пожалуйста");
 
-        boolean result = filter.check(updateMock);
+        boolean result = filter.check(updateContextMock);
 
         assertTrue(result, "check() should return true when the text contains the Unicode pattern");
     }
@@ -61,7 +65,7 @@ class RegexFilterTest {
         RegexFilter filter = new RegexFilter(".+");
         when(messageMock.getText()).thenReturn("");
 
-        boolean result = filter.check(updateMock);
+        boolean result = filter.check(updateContextMock);
 
         assertFalse(result, "check() should return false when the message text is empty");
     }
@@ -69,10 +73,10 @@ class RegexFilterTest {
     @Test
     void checkShouldThrowExceptionWhenMessageIsNull() {
         RegexFilter filter = new RegexFilter("test");
-        when(updateMock.getMessage()).thenReturn(null);
+        when(updateContextMock.getUpdate().getMessage()).thenReturn(null);
 
         assertThrows(NullPointerException.class,
-                () -> filter.check(updateMock),
+                () -> filter.check(updateContextMock),
                 "check() should throw NullPointerException when update.getMessage() is null");
     }
 
@@ -81,7 +85,7 @@ class RegexFilterTest {
         RegexFilter filter = new RegexFilter("test");
         when(messageMock.getText()).thenReturn(null);
 
-        assertDoesNotThrow(() -> filter.check(updateMock),
+        assertDoesNotThrow(() -> filter.check(updateContextMock),
                 "check() should throw NullPointerException when message.getText() is null");
     }
 }
