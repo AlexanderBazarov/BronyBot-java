@@ -25,7 +25,7 @@ public abstract class StatesGroup {
 						result.add(val);
 
                     } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+
                     }
                 }
             }

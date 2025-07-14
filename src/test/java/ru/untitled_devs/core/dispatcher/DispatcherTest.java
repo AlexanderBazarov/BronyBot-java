@@ -38,7 +38,7 @@ class DispatcherTest {
 		router = mock(UpdateRouter.class);
 		logger = mock(Logger.class);
 		sceneManager = new SceneManager();
-		dispatcher = new Dispatcher(storage, logger, sceneManager);
+		dispatcher = new Dispatcher(storage, sceneManager);
 		dispatcher.addRouter(router);
 	}
 

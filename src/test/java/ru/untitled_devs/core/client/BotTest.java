@@ -36,7 +36,7 @@ class BotTest {
         router = mock(UpdateRouter.class);
 		dispatcher = mock(Dispatcher.class);
         Logger logger = mock(Logger.class);
-        bot = spy(new PollingClient("testToken", "testUsername", dispatcher, logger));
+        bot = spy(new PollingClient("testToken", "testUsername", dispatcher));
 
     }
 

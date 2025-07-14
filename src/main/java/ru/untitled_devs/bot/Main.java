@@ -10,9 +10,9 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import ru.untitled_devs.bot.config.Config;
 import ru.untitled_devs.bot.features.localisation.LocalisationScene;
-import ru.untitled_devs.bot.features.localisation.midlewares.LocalisationMiddleware;
+import ru.untitled_devs.bot.features.localisation.LocalisationMiddleware;
 import ru.untitled_devs.bot.features.registration.RegistrationScene;
-import ru.untitled_devs.bot.features.registration.middlewares.LoginMiddleware;
+import ru.untitled_devs.bot.features.registration.LoginMiddleware;
 import ru.untitled_devs.bot.features.start.StartRouter;
 import ru.untitled_devs.bot.shared.geocoder.Geocoder;
 import ru.untitled_devs.bot.shared.geocoder.yandex.YandexGeocoder;
@@ -25,9 +25,9 @@ import ru.untitled_devs.core.routers.scenes.SceneManager;
 public class Main {
     public static void main(String[] args) {
 		InMemoryStorage storage = new InMemoryStorage();
-		Logger logger = LogManager.getLogger();
 		SceneManager sceneManager = new SceneManager();
-		Dispatcher dispatcher = new Dispatcher(storage, logger, sceneManager);
+		Logger logger = LogManager.getLogger();
+		Dispatcher dispatcher = new Dispatcher(storage, sceneManager);
 
 		MongoClient client = MongoClients.create(Config.getMongoConfig().getMongoString());
 		Datastore datastore = Morphia.createDatastore(client, Config.getMongoConfig().getMongoDBName());
@@ -40,7 +40,7 @@ public class Main {
 		try {
 			TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
             PollingClient bot = new PollingClient(Config.getBotConfig().getBotToken(),
-				Config.getBotConfig().getBotName(), dispatcher, logger);
+				Config.getBotConfig().getBotName(), dispatcher);
 
 			sceneManager.register(new RegistrationScene(bot, datastore, geocoder, imageService));
 			sceneManager.register(new LocalisationScene(bot));

@@ -1,6 +1,8 @@
 package ru.untitled_devs.core.dispatcher;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.untitled_devs.core.context.UpdateContext;
 import ru.untitled_devs.core.context.UpdateContextFactory;
@@ -23,13 +25,12 @@ public class Dispatcher {
 	private final List<UpdateRouter> routers = new ArrayList<>();
 	private final Storage storage;
 	private final List<Middleware> middlewares = new ArrayList<>();
-	private final Logger logger;
+	private final Logger logger = LogManager.getLogger(Dispatcher.class);
 	private final SceneManager sceneManager;
 
-	public Dispatcher(Storage storage, Logger logger, SceneManager sceneManager) {
+	public Dispatcher(Storage storage, SceneManager sceneManager) {
 		this.sceneManager = sceneManager;
 		this.storage = storage;
-		this.logger = logger;
 
 		userQueueExecutor = new UserQueueExecutor(10, logger);
 	}
