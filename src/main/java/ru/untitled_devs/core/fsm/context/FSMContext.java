@@ -11,6 +11,8 @@ import java.util.Set;
 public class FSMContext {
     private State state = DefaultStates.DEFAULT;
     private final Map<DataKey<?>, Object> data = new HashMap<>();
+	private final Map<DataKey<?>, Object> sceneData = new HashMap<>();
+	private String sceneId;
 
     public FSMContext() {
 
@@ -41,24 +43,57 @@ public class FSMContext {
     }
 
     public <T> void removeData(DataKey<T> key) {
-        this.data.remove(key);
+        data.remove(key);
     }
 
     public Set<DataKey<?>> getDataKeys() {
-        return this.data.keySet();
+        return data.keySet();
     }
 
     public Map<DataKey<?>, Object> getAllData() {
-        return Collections.unmodifiableMap(this.data);
+        return Collections.unmodifiableMap(data);
     }
 
     public void clearData() {
-        this.data.clear();
+        data.clear();
     }
 
     public void reset() {
-        this.state = DefaultStates.DEFAULT;
-        this.data.clear();
+        state = DefaultStates.DEFAULT;
+        data.clear();
     }
+
+	public void setSceneId(String sceneId) {
+		this.sceneId = sceneId;
+	}
+
+	public String getSceneId() {
+		return sceneId;
+	}
+
+	public void clearScene() {
+		sceneId = null;
+	}
+
+	public void clearWizard() {
+		sceneId = null;
+		sceneData.clear();
+	}
+
+	public <T> void setScenedData(DataKey<T> key, T value) {
+		sceneData.put(key, value);
+	}
+
+	public <T> T getScenedData(DataKey<T> key) {
+		Object rawData= data.get(key);
+		if (rawData == null) {
+			return null;
+		}
+		return key.getType().cast(rawData);
+	}
+
+	public void resetScenedData() {
+		sceneData.clear();
+	}
 
 }
