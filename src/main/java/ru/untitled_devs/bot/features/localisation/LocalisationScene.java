@@ -9,30 +9,39 @@ import ru.untitled_devs.core.client.PollingClient;
 import ru.untitled_devs.core.fsm.context.DataKey;
 import ru.untitled_devs.core.fsm.context.FSMContext;
 import ru.untitled_devs.core.fsm.states.State;
-import ru.untitled_devs.core.routers.Router;
 import ru.untitled_devs.core.routers.handlers.CallbackQueryHandler;
-import ru.untitled_devs.core.routers.handlers.MessageHandler;
+import ru.untitled_devs.core.routers.scenes.Scene;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 
-public class LocalisationRouter extends Router {
+public class LocalisationScene extends Scene {
 	private final PollingClient bot;
 
-	public LocalisationRouter(PollingClient bot) {
+	public LocalisationScene(PollingClient bot) {
 		this.bot = bot;
 
 		this.registerHandlers();
 	}
 
 	private void registerHandlers() {
-		addHandler(LocalisationStates.START, new MessageHandler(this::askLang));
 		addHandler(LocalisationStates.GETLANG, new CallbackQueryHandler(this::getLang));
 	}
 
-	private void askLang(Message message, FSMContext ctx) {
+	@Override
+	public String getId() {
+		return "lang";
+	}
+
+	@Override
+	public void leave(long chatId, FSMContext ctx) {
+
+	}
+
+	@Override
+	public void enter(long chatId, FSMContext ctx) {
 		InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
 
 		InlineKeyboardButton ruButton = InlineKeyboardButton.builder()
@@ -54,7 +63,7 @@ public class LocalisationRouter extends Router {
 
 		markup.setKeyboard(rows);
 
-		Message sentMessage = bot.sendMessage(message.getChatId(), "Please, setup Your Language", markup);
+		Message sentMessage = bot.sendMessage(chatId, "Please, setup Your Language", markup);
 
 		DataKey<Integer> messageKey = DataKey.of("getLangMessageId", Integer.class);
 
