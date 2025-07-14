@@ -1,6 +1,5 @@
 package ru.untitled_devs.core.routers.scenes;
 
-import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.untitled_devs.core.context.UpdateContext;
 import ru.untitled_devs.core.fsm.context.FSMContext;
 
@@ -12,6 +11,10 @@ public class SceneManager {
 
 	public void register(Scene scene) {
 		scenes.put(scene.getId(), scene);
+	}
+
+	public Scene getScene(String sceneId) {
+		return scenes.get(sceneId);
 	}
 
 	public void enterScene(String sceneId, long chatId, FSMContext ctx) {
@@ -31,12 +34,12 @@ public class SceneManager {
 		ctx.clearScene();
 	}
 
-	public boolean handle(UpdateContext update, FSMContext ctx) {
+	public void handle(UpdateContext update, FSMContext ctx) throws IllegalArgumentException{
 		String id = ctx.getSceneId();
-		if (id == null) return false;
+		if (id == null) throw new IllegalArgumentException();
 		Scene scene = scenes.get(id);
-		if (scene == null) return false;
+		if (scene == null) throw new IllegalArgumentException();
 
-		return scene.routeUpdate(update, ctx);
+		scene.routeUpdate(update, ctx);
 	}
 }
