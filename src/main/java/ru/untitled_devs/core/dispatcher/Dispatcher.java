@@ -4,12 +4,15 @@ import org.apache.logging.log4j.Logger;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.untitled_devs.core.context.UpdateContext;
 import ru.untitled_devs.core.context.UpdateContextFactory;
+import ru.untitled_devs.core.exceptions.StopMiddlewareException;
+import ru.untitled_devs.core.exceptions.StopRoutingException;
 import ru.untitled_devs.core.executor.UserQueueExecutor;
 import ru.untitled_devs.core.fsm.context.FSMContext;
 import ru.untitled_devs.core.fsm.storage.Storage;
 import ru.untitled_devs.core.fsm.storage.StorageKey;
 import ru.untitled_devs.core.middlewares.Middleware;
 import ru.untitled_devs.core.routers.UpdateRouter;
+import ru.untitled_devs.core.routers.scenes.Scene;
 import ru.untitled_devs.core.routers.scenes.SceneManager;
 
 import java.util.ArrayList;
@@ -61,31 +64,53 @@ public class Dispatcher {
 
 		StorageKey key = new StorageKey(updateContext.getChatId(), updateContext.getUserId());
 
-		FSMContext context = this.storage.getOrCreateContext(key);
+		FSMContext fsmContext = this.storage.getOrCreateContext(key);
 
+		try {
+			runMiddlewares(updateContext, fsmContext);
+			handleScene(updateContext, fsmContext);
+
+			handleRouters(updateContext, fsmContext);
+		} catch (StopRoutingException e) {
+			return;
+		}
+	}
+
+	private void runMiddlewares(UpdateContext ctx, FSMContext fsmCtx) throws StopRoutingException {
 		for (Middleware middleware : middlewares) {
 			try {
-				if (!middleware.preHandle(updateContext, context)){
-					logger.debug("Middleware prevented handling update: {}", update);
-					return;
-				}
-			} catch (Exception e) {
-				logger.error("Exception in middleware: ", e);
-				return;
-			}
-		}
-
-		if (context.getSceneId() != null) {
-			boolean handled = sceneManager.handle(updateContext, context);
-			if (handled) return;
-		}
-
-		for (UpdateRouter router : routers) {
-			try {
-				router.routeUpdate(updateContext, context);
-			} catch (Exception e) {
-				logger.error("Exception in router {} while handling update: {}", router.getClass().getSimpleName(), update, e);
+				middleware.preHandle(ctx, fsmCtx);
+			} catch (StopMiddlewareException e) {
+				logger.debug("Middleware chain stopped: {}", e.getMessage());
+				break;
 			}
 		}
 	}
+
+	private void handleScene(UpdateContext ctx, FSMContext fsmCtx) throws StopRoutingException {
+		if (fsmCtx.getSceneId() != null) {
+			Scene scene = sceneManager.getScene(fsmCtx.getSceneId());
+			if (scene == null) throw new IllegalArgumentException();
+			try {
+				scene.routeUpdate(ctx, fsmCtx);
+				logger.debug("Scene handled update: {}", fsmCtx.getSceneId());
+			} catch (Exception e) {
+				logger.error("Scene {} failed: {}",
+					sceneManager.getScene(fsmCtx.getSceneId()).getClass().getSimpleName(), ctx.getUpdate(), e);
+			}
+
+			throw new StopRoutingException();
+		}
+	}
+
+	private void handleRouters(UpdateContext ctx, FSMContext fsmCtx) throws StopRoutingException {
+		for (UpdateRouter router : routers) {
+			try {
+				router.routeUpdate(ctx, fsmCtx);
+			} catch (Exception e) {
+				logger.error("Router {} failed: {}", router.getClass().getSimpleName(), ctx.getUpdate(), e);
+			}
+		}
+	}
+
 }
