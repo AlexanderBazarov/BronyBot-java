@@ -1,8 +1,8 @@
 package ru.untitled_devs.core.routers.filters;
 
-import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.untitled_devs.core.context.UpdateContext;
 
 @FunctionalInterface
 public interface Filter {
-    boolean check(Update update);
+    boolean check(UpdateContext update);
 }
