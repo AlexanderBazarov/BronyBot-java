@@ -3,10 +3,11 @@ package ru.untitled_devs.bot.shared.models;
 import com.mongodb.client.model.geojson.Point;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
+import dev.morphia.annotations.Reference;
 import org.bson.types.ObjectId;
 
 @Entity("Profiles")
-public final class Profile implements Model {
+public final class Profile {
     @Id
     private ObjectId id;
 
@@ -14,11 +15,11 @@ public final class Profile implements Model {
     private String description;
     private int age;
     private String location;
-    private String image;
+	private Point coordinates;
+	private boolean show;
 
-    private Point coordinates;
-
-    private boolean show;
+	@Reference()
+	private Image image;
 
 	public ObjectId getId() {
 		return id;
@@ -56,12 +57,16 @@ public final class Profile implements Model {
 		this.location = location;
 	}
 
-	public String getImage() {
+	public Image getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
+	public void setImage(Image image) {
 		this.image = image;
+	}
+
+	public boolean hasImage() {
+		return image != null;
 	}
 
 	public Point getCoordinates() {
