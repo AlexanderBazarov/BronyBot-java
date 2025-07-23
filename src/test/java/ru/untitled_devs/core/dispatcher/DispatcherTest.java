@@ -128,8 +128,7 @@ class DispatcherTest {
 		when(storage.getOrCreateContext(any(StorageKey.class))).thenReturn(context);
 		when(context.getSceneId()).thenReturn("testScene");
 
-		when(testScene.getId()).thenReturn("testScene");
-		sceneManager.register(testScene);
+		sceneManager.register("testScene", testScene);
 
 		dispatcher.feedUpdate(update);
 
@@ -168,8 +167,7 @@ class DispatcherTest {
 		when(storage.getOrCreateContext(any(StorageKey.class))).thenReturn(context);
 		when(context.getSceneId()).thenReturn("testScene");
 
-		when(testScene.getId()).thenReturn("testScene");
-		sceneManager.register(testScene);
+		sceneManager.register("testScene", testScene);
 
 		dispatcher.feedUpdate(update);
 
