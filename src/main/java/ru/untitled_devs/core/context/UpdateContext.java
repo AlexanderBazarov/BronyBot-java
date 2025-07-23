@@ -1,6 +1,7 @@
 package ru.untitled_devs.core.context;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
+
 import java.util.Locale;
 
 public abstract class UpdateContext {

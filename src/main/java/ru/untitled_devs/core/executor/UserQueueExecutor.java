@@ -2,7 +2,6 @@ package ru.untitled_devs.core.executor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import ru.untitled_devs.core.utils.NamedThreadFactory;
 
 import java.util.Map;

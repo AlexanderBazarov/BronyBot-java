@@ -1,6 +1,5 @@
 package ru.untitled_devs.core.routers.filters;
 
-import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.untitled_devs.core.context.UpdateContext;
 
 public class Command implements Filter{
