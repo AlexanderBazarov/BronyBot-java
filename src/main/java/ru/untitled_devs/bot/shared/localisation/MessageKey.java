@@ -11,6 +11,7 @@ public enum MessageKey {
 	ASK_AGE("ask_age"),
 	LOW_AGE("low_age"),
 	AGE_ERROR("age_error"),
+	ASK_SEX("ask_sex"),
 	ASK_LOCATION("ask_location"),
 	CANT_FIND_LOCATION("cant_find_location"),
 	ASK_DESCRIPTION("ask_description"),
