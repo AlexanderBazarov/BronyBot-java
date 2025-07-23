@@ -6,6 +6,8 @@ import ru.untitled_devs.bot.shared.models.User;
 import ru.untitled_devs.bot.shared.repositories.ProfileRepo;
 import ru.untitled_devs.bot.shared.repositories.UserRepo;
 
+import java.util.Optional;
+
 public final class RegistrationService {
 
 	private final UserRepo userRepo;
@@ -16,10 +18,18 @@ public final class RegistrationService {
 		profileRepo = new ProfileRepo(datastore);
 	}
 
-	void registerUser(User user, Profile profile) {
+	public void registerUser(User user, Profile profile) {
 		Profile savedProfile = profileRepo.save(profile);
 		user.setProfile(savedProfile);
 		userRepo.save(user);
+	}
+
+	public Optional<User> getByChatId(long chatId) {
+		return userRepo.getByTelegramId(chatId);
+	}
+
+	public boolean isUseRegistered(long chatId) {
+		return getByChatId(chatId).isPresent();
 	}
 
 }

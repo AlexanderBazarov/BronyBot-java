@@ -2,7 +2,6 @@ package ru.untitled_devs.bot.features.registration;
 
 import com.mongodb.client.model.geojson.Point;
 import com.mongodb.client.model.geojson.Position;
-import dev.morphia.Datastore;
 import org.telegram.telegrambots.meta.api.objects.Location;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
@@ -22,6 +21,7 @@ import ru.untitled_devs.core.fsm.context.DataKey;
 import ru.untitled_devs.core.fsm.context.FSMContext;
 import ru.untitled_devs.core.routers.handlers.MessageHandler;
 import ru.untitled_devs.core.routers.scenes.Scene;
+import ru.untitled_devs.core.routers.scenes.SceneManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +35,7 @@ public final class RegistrationScene extends Scene {
 	private final RegistrationService regService;
 	private final Geocoder geocoder;
 	private final ImageService imageService;
+	private final SceneManager sceneManager;
 
 	private final static DataKey<Locale> langKey = DataKey.of("lang", Locale.class);
 	private final static DataKey<Profile> profileKey = DataKey.of("RegistrationData", Profile.class);
@@ -46,13 +47,15 @@ public final class RegistrationScene extends Scene {
 	private static int MAX_DESCRIPTION_LENGTH = 500;
 	private static int MAX_FILE_SIZE = 5 * 1024 * 1024;
 
-	public RegistrationScene(BotClient bot, Datastore datastore, Geocoder geocoder, ImageService imageService) {
+	public RegistrationScene(BotClient bot, RegistrationService regService,
+							 Geocoder geocoder, ImageService imageService, SceneManager sceneManager) {
 		this.bot = bot;
-		regService = new RegistrationService(datastore);
+		this.regService = regService;
 		this.geocoder = geocoder;
 		this.imageService = imageService;
+		this.sceneManager = sceneManager;
 
-		this.registerHandlers();
+		registerHandlers();
 	}
 
 	private void registerHandlers() {
@@ -62,11 +65,6 @@ public final class RegistrationScene extends Scene {
 		addHandler(RegistrationStates.PHOTO, new MessageHandler(this::getPhoto));
 		addHandler(RegistrationStates.DESCRIPTION, new MessageHandler(this::getDescription));
 		addHandler(RegistrationStates.FINISH, new MessageHandler(this::finishRegistration));
-	}
-
-	@Override
-	public String getId() {
-		return "register";
 	}
 
 	public void enter(long chatId, FSMContext ctx) {
@@ -426,6 +424,7 @@ public final class RegistrationScene extends Scene {
 					loc
 				)
 			);
+			sceneManager.enterScene("menu", chatId, ctx);
 			return;
 		}
 

@@ -14,6 +14,7 @@ import ru.untitled_devs.core.client.PollingClient;
 import ru.untitled_devs.core.context.UpdateContext;
 import ru.untitled_devs.core.fsm.context.DataKey;
 import ru.untitled_devs.core.fsm.context.FSMContext;
+import ru.untitled_devs.core.routers.scenes.SceneManager;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -36,6 +37,8 @@ class RegistrationSceneTest {
 	PollingClient bot;
 	Update update;
 	UpdateContext updateContext;
+	RegistrationService registrationService;
+	SceneManager sceneManager;
 
 	@BeforeEach
 	public void getRegistrationRouter() throws IOException {
@@ -47,6 +50,8 @@ class RegistrationSceneTest {
 		when(geocoder.getPlaceName(new Coordinates(125.0, 125.0))).thenThrow(new IllegalArgumentException());
 		imageService = mock(ImageService.class);
 
+		sceneManager = mock(SceneManager.class);
+
 		photoSize = mock(PhotoSize.class);
 
 		bot = mock(PollingClient.class);
@@ -55,7 +60,9 @@ class RegistrationSceneTest {
 		updateContext = mock(UpdateContext.class);
 		when(updateContext.getUpdate()).thenReturn(update);
 
-		router =  new RegistrationScene(bot, datastore, geocoder, imageService);
+		registrationService = new RegistrationService(datastore);
+
+		router =  new RegistrationScene(bot, registrationService, geocoder, imageService, sceneManager);
 		ctx = mock(FSMContext.class);
 		DataKey<Locale> langKey = DataKey.of("lang", Locale.class);
 		when(ctx.getData(langKey)).thenReturn(Locale.forLanguageTag("en-US"));
