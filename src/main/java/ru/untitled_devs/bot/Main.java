@@ -11,8 +11,10 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import ru.untitled_devs.bot.config.Config;
 import ru.untitled_devs.bot.features.localisation.LocalisationScene;
 import ru.untitled_devs.bot.features.localisation.LocalisationMiddleware;
+import ru.untitled_devs.bot.features.menu.MainMenuScene;
 import ru.untitled_devs.bot.features.registration.RegistrationScene;
 import ru.untitled_devs.bot.features.registration.LoginMiddleware;
+import ru.untitled_devs.bot.features.registration.RegistrationService;
 import ru.untitled_devs.bot.features.start.StartRouter;
 import ru.untitled_devs.bot.shared.geocoder.Geocoder;
 import ru.untitled_devs.bot.shared.geocoder.yandex.YandexGeocoder;
@@ -36,17 +38,19 @@ public class Main {
 			new YandexGeocoder(Config.getGeocodingConfig().getApiUrl(),
 				Config.getGeocodingConfig().getApiKey());
 		ImageService imageService = new ImageService(Config.getImagesConfig().getImagesPath(), datastore);
+		RegistrationService regService = new RegistrationService(datastore);
 
 		try {
 			TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
             PollingClient bot = new PollingClient(Config.getBotConfig().getBotToken(),
 				Config.getBotConfig().getBotName(), dispatcher);
 
-			sceneManager.register(new RegistrationScene(bot, datastore, geocoder, imageService));
-			sceneManager.register(new LocalisationScene(bot));
+			sceneManager.register("register", new RegistrationScene(bot, regService, geocoder, imageService, sceneManager));
+			sceneManager.register("lang", new LocalisationScene(bot));
+			sceneManager.register("menu", new MainMenuScene(bot, sceneManager));
 
 			dispatcher.addMiddleware(new LocalisationMiddleware(sceneManager));
-			dispatcher.addMiddleware(new LoginMiddleware(sceneManager));
+			dispatcher.addMiddleware(new LoginMiddleware(sceneManager, regService));
 
 			dispatcher.addRouter(new StartRouter(bot));
 			dispatcher.addRouter(new LocalisationScene(bot));
