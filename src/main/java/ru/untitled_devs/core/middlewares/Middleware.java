@@ -10,10 +10,19 @@ public abstract class Middleware {
     public abstract void preHandle(UpdateContext update, FSMContext ctx);
 
 	protected void stopMiddlewareChain() {
-		throw new StopMiddlewareException();
+		throw new StopMiddlewareException("Stopped in middleware");
+	}
+
+	protected void stopMiddlewareChain(String message) {
+		throw new StopMiddlewareException(message);
 	}
 
 	protected void stopRouting() {
-		throw new StopRoutingException();
+		throw new StopRoutingException("Stopped in middleware");
 	}
+
+	protected void stopRouting(String message) {
+		throw new StopRoutingException(message);
+	}
+
 }
