@@ -7,7 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import ru.untitled_devs.bot.shared.localisation.ButtonKey;
 import ru.untitled_devs.bot.shared.localisation.ButtonsLocalisationService;
 import ru.untitled_devs.bot.shared.localisation.MessageKey;
-import ru.untitled_devs.bot.shared.localisation.MessagesLocalisationService;
+import ru.untitled_devs.bot.shared.localisation.MsgLocService;
 import ru.untitled_devs.core.client.BotClient;
 import ru.untitled_devs.core.fsm.context.DataKey;
 import ru.untitled_devs.core.fsm.context.FSMContext;
@@ -33,12 +33,7 @@ public class MainMenuScene extends Scene {
 	public void enter(long chatId, FSMContext ctx) {
 		Locale loc = ctx.getData(langKey);
 		bot.sendMessage(chatId,
-			MessagesLocalisationService.getLocal(
-				MessageKey.MAIN_MENU,
-				loc
-			),
-			getMainMenuMarkup(loc)
-		);
+			MsgLocService.getLocal(MessageKey.MAIN_MENU, loc), getMainMenuMarkup(loc));
 		ctx.setState(MainMenuStates.MENU);
 	}
 

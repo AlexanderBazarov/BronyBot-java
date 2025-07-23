@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class MessagesLocalisationService {
+public class MsgLocService {
 	private static final String BUNDLE_BASE = "messages.messages";
 
 	public static ResourceBundle messageBundle(Locale locale) {

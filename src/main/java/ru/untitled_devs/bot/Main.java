@@ -30,13 +30,13 @@ public class Main {
 		SceneManager sceneManager = new SceneManager();
 		Logger logger = LoggerFactory.getLogger(Main.class);
 		Dispatcher dispatcher = new Dispatcher(storage, sceneManager);
-
 		MongoClient client = MongoClients.create(Config.getMongoConfig().getMongoString());
 		Datastore datastore = Morphia.createDatastore(client, Config.getMongoConfig().getMongoDBName());
 
 		Geocoder geocoder =
 			new YandexGeocoder(Config.getGeocodingConfig().getApiUrl(),
 				Config.getGeocodingConfig().getApiKey());
+
 		ImageService imageService = new ImageService(Config.getImagesConfig().getImagesPath(), datastore);
 		RegistrationService regService = new RegistrationService(datastore);
 

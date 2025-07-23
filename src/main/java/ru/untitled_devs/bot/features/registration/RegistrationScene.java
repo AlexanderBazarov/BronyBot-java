@@ -72,7 +72,7 @@ public final class RegistrationScene extends Scene {
 		Locale loc = ctx.getData(langKey);
 
 		bot.sendMessage(chatId,
-			MessagesLocalisationService.getLocal(MessageKey.NOT_REGISTERED, loc));
+			MsgLocService.getLocal(MessageKey.NOT_REGISTERED, loc));
 
 		Profile profileData = new Profile();
 		DataKey<Profile> key = DataKey.of("RegistrationData", Profile.class);
@@ -81,7 +81,7 @@ public final class RegistrationScene extends Scene {
 		ctx.setState(RegistrationStates.NAME);
 
 		bot.sendMessage(chatId,
-			MessagesLocalisationService.getLocal(MessageKey.WHATS_YOUR_NAME, loc));
+			MsgLocService.getLocal(MessageKey.WHATS_YOUR_NAME, loc));
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public final class RegistrationScene extends Scene {
 
 		if (name.length() > MAX_NAME_LENGTH) {
 			bot.sendMessage(message.getChatId(),
-				MessagesLocalisationService.getLocal(
+				MsgLocService.getLocal(
 					MessageKey.TOO_BIG_NAME,
 					loc
 				)
@@ -110,7 +110,7 @@ public final class RegistrationScene extends Scene {
 		ctx.setState(RegistrationStates.AGE);
 
 		bot.sendMessage(message.getChatId(),
-			MessagesLocalisationService.getLocal(MessageKey.ASK_AGE, loc));
+			MsgLocService.getLocal(MessageKey.ASK_AGE, loc));
 	}
 
 	private void getAge(Message message, FSMContext ctx) {
@@ -122,19 +122,19 @@ public final class RegistrationScene extends Scene {
 			age = Integer.parseInt(message.getText());
 		} catch (NumberFormatException e) {
 			bot.sendMessage(message.getChatId(),
-				MessagesLocalisationService.getLocal(MessageKey.AGE_ERROR, loc));
+				MsgLocService.getLocal(MessageKey.AGE_ERROR, loc));
 			throw new IllegalArgumentException("Message must contain only digits");
 		}
 
 		if (age < MIN_AGE) {
 			bot.sendMessage(message.getChatId(),
-				MessagesLocalisationService.getLocal(MessageKey.TOO_SMALL_AGE, loc));
+				MsgLocService.getLocal(MessageKey.TOO_SMALL_AGE, loc));
 			throw new IllegalArgumentException("Age must be in interval from 5 to 100");
 		}
 
 		if (age > MAX_AGE) {
 			bot.sendMessage(message.getChatId(),
-				MessagesLocalisationService.getLocal(MessageKey.TOO_BIG_AGE, loc));
+				MsgLocService.getLocal(MessageKey.TOO_BIG_AGE, loc));
 			throw new IllegalArgumentException("Age must be in interval from 5 to 100");
 		}
 
@@ -146,7 +146,7 @@ public final class RegistrationScene extends Scene {
 		ctx.setState(RegistrationStates.LOCATION);
 
 		bot.sendMessage(message.getChatId(),
-			MessagesLocalisationService.getLocal(MessageKey.ASK_LOCATION, loc));
+			MsgLocService.getLocal(MessageKey.ASK_LOCATION, loc));
 	}
 
 	private void getLocation(Message message, FSMContext ctx) {
@@ -160,7 +160,7 @@ public final class RegistrationScene extends Scene {
 			location = resolveLocation(message, coords, message.hasLocation());
 		} catch (IllegalArgumentException e) {
 			bot.sendMessage(message.getChatId(),
-				MessagesLocalisationService.getLocal(MessageKey.CANT_FIND_LOCATION, loc));
+				MsgLocService.getLocal(MessageKey.CANT_FIND_LOCATION, loc));
 			return;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -168,11 +168,7 @@ public final class RegistrationScene extends Scene {
 
 		if (location.length() > MAX_LOCATION_LENGTH) {
 			bot.sendMessage(message.getChatId(),
-				MessagesLocalisationService.getLocal(
-					MessageKey.TOO_BIG_LOCATION,
-					loc
-				)
-			);
+				MsgLocService.getLocal(MessageKey.TOO_BIG_LOCATION, loc));
 			throw new IllegalArgumentException("Location length must be not bigger than 150 characters.");
 		}
 
@@ -202,7 +198,7 @@ public final class RegistrationScene extends Scene {
 		markup.setKeyboard(rows);
 
 		bot.sendMessage(message.getChatId(),
-			MessagesLocalisationService.getLocal(MessageKey.ASK_DESCRIPTION, loc), markup);
+			MsgLocService.getLocal(MessageKey.ASK_DESCRIPTION, loc), markup);
 	}
 
 	private Coordinates extractCoordinates(Message message) throws IOException {
@@ -242,11 +238,7 @@ public final class RegistrationScene extends Scene {
 
 		if (description.length() > MAX_DESCRIPTION_LENGTH) {
 			bot.sendMessage(message.getChatId(),
-				MessagesLocalisationService.getLocal(
-					MessageKey.TOO_BIG_DESCRIPTION,
-					loc
-				)
-			);
+				MsgLocService.getLocal(MessageKey.TOO_BIG_DESCRIPTION, loc));
 			throw new IllegalArgumentException("Description length must be not bigger than 500 characters.");
 		}
 
@@ -272,9 +264,7 @@ public final class RegistrationScene extends Scene {
 		markup.setKeyboard(rows);
 
 		bot.sendMessage(message.getChatId(),
-			MessagesLocalisationService.getLocal(MessageKey.ASK_PHOTO, loc),
-			markup
-		);
+			MsgLocService.getLocal(MessageKey.ASK_PHOTO, loc), markup);
 	}
 
 	private void getPhoto(Message message, FSMContext ctx) {
@@ -301,11 +291,7 @@ public final class RegistrationScene extends Scene {
 		}
 
 		bot.sendMessage(message.getChatId(),
-			MessagesLocalisationService.getLocal(
-				MessageKey.INCORRECT_INPUT,
-				loc
-			)
-		);
+			MsgLocService.getLocal(MessageKey.INCORRECT_INPUT, loc));
 	}
 
 	private Image processPhoto(Message message, Locale loc) {
@@ -315,7 +301,7 @@ public final class RegistrationScene extends Scene {
 
 		if (fileSize > MAX_FILE_SIZE) {
 			bot.sendMessage(message.getChatId(),
-				MessagesLocalisationService.getLocal(MessageKey.TOO_BIG_PHOTO_SIZE, loc));
+				MsgLocService.getLocal(MessageKey.TOO_BIG_PHOTO_SIZE, loc));
 			throw new IllegalArgumentException("File size must be no bigger than 5 MB");
 		}
 
@@ -324,19 +310,13 @@ public final class RegistrationScene extends Scene {
 			return imageService.saveImage(stream, fileId);
 		} catch (IOException | TelegramApiException e) {
 			bot.sendMessage(message.getChatId(),
-				MessagesLocalisationService.getLocal(
-					MessageKey.FILE_DOWNLOADING_ERROR,
-					loc
-				)
-			);
+				MsgLocService.getLocal(MessageKey.FILE_DOWNLOADING_ERROR, loc));
 			throw new RuntimeException(e);
 		}
 	}
 
 	private void sendPreview(long chatId, Profile profile, Locale loc) {
-		String text = MessagesLocalisationService.getLocal(
-			MessageKey.PROFILE_MESSAGE,
-			loc,
+		String text = MsgLocService.getLocal(MessageKey.PROFILE_MESSAGE, loc,
 			profile.getName(), profile.getAge(), profile.getLocation(), profile.getDescription()
 		);
 
@@ -371,12 +351,7 @@ public final class RegistrationScene extends Scene {
 			bot.sendPhoto(chatId, text, image, markup);
 		} catch (IOException e) {
 			bot.sendMessage(
-				chatId,
-				MessagesLocalisationService.getLocal(
-					MessageKey.FILE_DOWNLOADING_ERROR,
-					loc
-				)
-			);
+				chatId, MsgLocService.getLocal(MessageKey.FILE_DOWNLOADING_ERROR, loc));
 		}
 	}
 
@@ -402,11 +377,7 @@ public final class RegistrationScene extends Scene {
 			ctx.setState(RegistrationStates.NAME);
 
 			bot.sendMessage(chatId,
-				MessagesLocalisationService.getLocal(
-					MessageKey.WHATS_YOUR_NAME,
-					loc
-				)
-			);
+				MsgLocService.getLocal(MessageKey.WHATS_YOUR_NAME, loc));
 			return;
 		}
 
@@ -418,22 +389,13 @@ public final class RegistrationScene extends Scene {
 			userData.setLang(loc.toLanguageTag());
 
 			regService.registerUser(userData, profileData);
-			bot.sendMessage(chatId,
-				MessagesLocalisationService.getLocal(
-					MessageKey.SUCCESSFUL_REGISTRATION,
-					loc
-				)
-			);
+			bot.sendMessage(chatId, MsgLocService.getLocal(MessageKey.SUCCESSFUL_REGISTRATION, loc));
 			sceneManager.enterScene("menu", chatId, ctx);
 			return;
 		}
 
 		bot.sendMessage(chatId,
-			MessagesLocalisationService.getLocal(
-				MessageKey.INCORRECT_INPUT,
-				loc
-			)
-		);
+			MsgLocService.getLocal(MessageKey.INCORRECT_INPUT, loc));
 
 	}
 }
