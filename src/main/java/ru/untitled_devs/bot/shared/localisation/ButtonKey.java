@@ -19,8 +19,8 @@ public enum ButtonKey {
 
 	DONE("done"),
 
-	MY_FORM("my_form"),
-	VIEW_FORMS("view_forms"),
+	MY_PROFILE("my_form"),
+	VIEW_PROFILES("view_forms"),
 	VIEW_LIKES("view_likes"),
 
 	SEND_LOCATION("send_location"),
