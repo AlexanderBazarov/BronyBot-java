@@ -1,6 +1,5 @@
 package ru.untitled_devs.core.client;
 
-import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
@@ -35,7 +34,6 @@ class BotTest {
         storage = mock(Storage.class);
         router = mock(UpdateRouter.class);
 		dispatcher = mock(Dispatcher.class);
-        Logger logger = mock(Logger.class);
         bot = spy(new PollingClient("testToken", "testUsername", dispatcher));
 
     }

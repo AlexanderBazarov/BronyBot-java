@@ -4,8 +4,8 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import ru.untitled_devs.bot.config.Config;
@@ -28,7 +28,7 @@ public class Main {
     public static void main(String[] args) {
 		InMemoryStorage storage = new InMemoryStorage();
 		SceneManager sceneManager = new SceneManager();
-		Logger logger = LogManager.getLogger();
+		Logger logger = LoggerFactory.getLogger(Main.class);
 		Dispatcher dispatcher = new Dispatcher(storage, sceneManager);
 
 		MongoClient client = MongoClients.create(Config.getMongoConfig().getMongoString());

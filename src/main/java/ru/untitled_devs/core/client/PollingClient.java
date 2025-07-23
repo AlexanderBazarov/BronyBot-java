@@ -1,7 +1,7 @@
 package ru.untitled_devs.core.client;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
@@ -27,7 +27,7 @@ import static ru.untitled_devs.core.utils.FileUtils.getImageFileNameWithExtensio
 
 public class PollingClient extends TelegramLongPollingBot implements BotClient {
     private final String botUsername;
-    private final Logger logger = LogManager.getLogger(PollingClient.class);
+    private final Logger logger = LoggerFactory.getLogger(PollingClient.class);
 	private final Dispatcher dispatcher;
 
     public PollingClient(String botToken, String botUsername, Dispatcher dispatcher) {

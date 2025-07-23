@@ -1,6 +1,5 @@
 package ru.untitled_devs.core.dispatcher;
 
-import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -28,7 +27,6 @@ import static org.mockito.Mockito.*;
 class DispatcherTest {
 	static Storage storage;
 	static UpdateRouter router;
-	static Logger logger;
 	static Dispatcher dispatcher;
 	static SceneManager sceneManager;
 
@@ -36,7 +34,6 @@ class DispatcherTest {
 	void setup() {
 		storage = mock(Storage.class);
 		router = mock(UpdateRouter.class);
-		logger = mock(Logger.class);
 		sceneManager = new SceneManager();
 		dispatcher = new Dispatcher(storage, sceneManager);
 		dispatcher.addRouter(router);

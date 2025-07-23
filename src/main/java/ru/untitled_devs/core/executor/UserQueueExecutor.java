@@ -1,6 +1,8 @@
 package ru.untitled_devs.core.executor;
 
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ru.untitled_devs.core.utils.NamedThreadFactory;
 
 import java.util.Map;
@@ -11,6 +13,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
 public class UserQueueExecutor implements UserScopedExecutor{
 	NamedThreadFactory namedThreadFactory = new NamedThreadFactory("ExecutorThread-");
 	private final ExecutorService executor;
@@ -18,9 +21,9 @@ public class UserQueueExecutor implements UserScopedExecutor{
 	private final Set<Long> active = ConcurrentHashMap.newKeySet();
 	private final Logger logger;
 
-	public UserQueueExecutor(int poolSize, Logger logger) {
+	public UserQueueExecutor(int poolSize) {
 		this.executor =  Executors.newFixedThreadPool(poolSize, namedThreadFactory);
-		this.logger = logger;
+		this.logger = LoggerFactory.getLogger(UserQueueExecutor.class);
 	}
 
 	@Override
@@ -41,7 +44,7 @@ public class UserQueueExecutor implements UserScopedExecutor{
 					try {
 						task.run();
 					} catch (Exception e) {
-						logger.error(e);
+						logger.error(String.valueOf(e));
 					}
 				}
 			} finally {
