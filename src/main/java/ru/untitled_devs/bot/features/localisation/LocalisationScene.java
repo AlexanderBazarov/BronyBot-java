@@ -31,11 +31,6 @@ public class LocalisationScene extends Scene {
 	}
 
 	@Override
-	public String getId() {
-		return "lang";
-	}
-
-	@Override
 	public void leave(long chatId, FSMContext ctx) {
 
 	}
