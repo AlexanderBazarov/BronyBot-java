@@ -2,6 +2,7 @@ package ru.untitled_devs.core.routers.scenes;
 
 import ru.untitled_devs.core.context.UpdateContext;
 import ru.untitled_devs.core.fsm.context.FSMContext;
+import ru.untitled_devs.core.fsm.storage.Storage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,8 +10,8 @@ import java.util.Map;
 public class SceneManager {
 	private final Map<String, Scene> scenes = new HashMap<>();
 
-	public void register(Scene scene) {
-		scenes.put(scene.getId(), scene);
+	public void register(String sceneId, Scene scene) {
+		scenes.put(sceneId, scene);
 	}
 
 	public Scene getScene(String sceneId) {
@@ -18,6 +19,8 @@ public class SceneManager {
 	}
 
 	public void enterScene(String sceneId, long chatId, FSMContext ctx) {
+		leaveCurrentScene(chatId, ctx);
+
 		Scene scene = scenes.get(sceneId);
 		if (scene == null) return;
 
