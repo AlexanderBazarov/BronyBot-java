@@ -8,6 +8,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.untitled_devs.bot.shared.geocoder.Coordinates;
 import ru.untitled_devs.bot.shared.geocoder.Geocoder;
 import ru.untitled_devs.bot.shared.image.ImageService;
+import ru.untitled_devs.bot.shared.localisation.BtnLocService;
+import ru.untitled_devs.bot.shared.localisation.ButtonKey;
 import ru.untitled_devs.bot.shared.models.Image;
 import ru.untitled_devs.bot.shared.models.Profile;
 import ru.untitled_devs.core.client.PollingClient;
@@ -331,7 +333,7 @@ class RegistrationSceneTest {
 
 		Message message = mock(Message.class);
 		when(message.hasText()).thenReturn(true);
-		when(message.getText()).thenReturn("Skip");
+		when(message.getText()).thenReturn(BtnLocService.getLocal(ButtonKey.SKIP_WORD, Locale.forLanguageTag("en-US")));
 
 		Profile profile = new Profile();
 		when(ctx.getData(profileKey)).thenReturn(profile);

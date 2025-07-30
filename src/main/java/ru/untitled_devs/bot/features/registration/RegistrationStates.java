@@ -8,6 +8,7 @@ public final class RegistrationStates extends StatesGroup {
     public static State NAME = state(RegistrationStates.class, "Name");
     public static State AGE = state(RegistrationStates.class, "Age");
     public static State LOCATION = state(RegistrationStates.class, "Location");
+	public static State SEX = state(RegistrationStates.class, "Sex");
 	public static State DESCRIPTION = state(RegistrationStates.class, "Description");
     public static State PHOTO = state(RegistrationStates.class, "Photo");
 	public static State PREVIEW = state(RegistrationStates.class, "Preview");
