@@ -1,6 +1,6 @@
 package ru.untitled_devs.core.routers.scenes;
 
-import ru.untitled_devs.core.fsm.context.FSMContext;
+import ru.untitled_devs.core.fsm.FSMContext;
 import ru.untitled_devs.core.routers.UpdateRouter;
 
 public abstract class Scene extends UpdateRouter {

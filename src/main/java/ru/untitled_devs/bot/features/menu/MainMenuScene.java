@@ -9,8 +9,8 @@ import ru.untitled_devs.bot.shared.localisation.BtnLocService;
 import ru.untitled_devs.bot.shared.localisation.MessageKey;
 import ru.untitled_devs.bot.shared.localisation.MsgLocService;
 import ru.untitled_devs.core.client.BotClient;
-import ru.untitled_devs.core.fsm.context.DataKey;
-import ru.untitled_devs.core.fsm.context.FSMContext;
+import ru.untitled_devs.core.fsm.DataKey;
+import ru.untitled_devs.core.fsm.FSMContext;
 import ru.untitled_devs.core.routers.scenes.Scene;
 import ru.untitled_devs.core.routers.scenes.SceneManager;
 

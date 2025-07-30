@@ -1,7 +1,7 @@
 package ru.untitled_devs.bot.features.registration;
 
 import ru.untitled_devs.core.context.UpdateContext;
-import ru.untitled_devs.core.fsm.context.FSMContext;
+import ru.untitled_devs.core.fsm.FSMContext;
 import ru.untitled_devs.core.fsm.states.State;
 import ru.untitled_devs.core.fsm.states.StatesGroup;
 import ru.untitled_devs.core.middlewares.Middleware;

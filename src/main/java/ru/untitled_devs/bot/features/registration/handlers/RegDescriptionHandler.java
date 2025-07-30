@@ -8,7 +8,7 @@ import ru.untitled_devs.bot.features.registration.RegistrationStates;
 import ru.untitled_devs.bot.shared.localisation.*;
 import ru.untitled_devs.bot.shared.models.Profile;
 import ru.untitled_devs.core.client.BotClient;
-import ru.untitled_devs.core.fsm.context.FSMContext;
+import ru.untitled_devs.core.fsm.FSMContext;
 import ru.untitled_devs.core.routers.filters.Filter;
 
 import java.util.ArrayList;

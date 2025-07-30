@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import ru.untitled_devs.core.context.UpdateContext;
 import ru.untitled_devs.core.exceptions.StopMiddlewareException;
 import ru.untitled_devs.core.exceptions.StopRoutingException;
-import ru.untitled_devs.core.fsm.context.FSMContext;
+import ru.untitled_devs.core.fsm.FSMContext;
 import ru.untitled_devs.core.fsm.storage.Storage;
 import ru.untitled_devs.core.fsm.storage.StorageKey;
 import ru.untitled_devs.core.middlewares.Middleware;

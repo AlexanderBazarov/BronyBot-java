@@ -1,7 +1,7 @@
 package ru.untitled_devs.core.fsm.storage;
 
 
-import ru.untitled_devs.core.fsm.context.FSMContext;
+import ru.untitled_devs.core.fsm.FSMContext;
 
 public interface Storage {
     FSMContext getContext(StorageKey key);

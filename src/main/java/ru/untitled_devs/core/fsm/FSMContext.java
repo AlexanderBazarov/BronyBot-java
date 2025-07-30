@@ -1,4 +1,4 @@
-package ru.untitled_devs.core.fsm.context;
+package ru.untitled_devs.core.fsm;
 
 import ru.untitled_devs.core.fsm.states.DefaultStates;
 import ru.untitled_devs.core.fsm.states.State;

@@ -1,7 +1,7 @@
 package ru.untitled_devs.core.routers;
 
 import ru.untitled_devs.core.context.UpdateContext;
-import ru.untitled_devs.core.fsm.context.FSMContext;
+import ru.untitled_devs.core.fsm.FSMContext;
 import ru.untitled_devs.core.fsm.states.State;
 import ru.untitled_devs.core.routers.handlers.Handler;
 

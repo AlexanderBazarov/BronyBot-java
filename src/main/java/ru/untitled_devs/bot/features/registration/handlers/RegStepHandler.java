@@ -4,8 +4,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import ru.untitled_devs.bot.shared.models.Profile;
 import ru.untitled_devs.core.client.BotClient;
 import ru.untitled_devs.core.context.UpdateContext;
-import ru.untitled_devs.core.fsm.context.DataKey;
-import ru.untitled_devs.core.fsm.context.FSMContext;
+import ru.untitled_devs.core.fsm.DataKey;
+import ru.untitled_devs.core.fsm.FSMContext;
 import ru.untitled_devs.core.routers.filters.Filter;
 import ru.untitled_devs.core.routers.handlers.Handler;
 

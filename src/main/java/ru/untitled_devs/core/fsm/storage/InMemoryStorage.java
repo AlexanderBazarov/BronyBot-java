@@ -1,6 +1,6 @@
 package ru.untitled_devs.core.fsm.storage;
 
-import ru.untitled_devs.core.fsm.context.FSMContext;
+import ru.untitled_devs.core.fsm.FSMContext;
 
 import java.util.concurrent.ConcurrentHashMap;
 

@@ -3,7 +3,7 @@ package ru.untitled_devs.core.middlewares;
 import ru.untitled_devs.core.context.UpdateContext;
 import ru.untitled_devs.core.exceptions.StopMiddlewareException;
 import ru.untitled_devs.core.exceptions.StopRoutingException;
-import ru.untitled_devs.core.fsm.context.FSMContext;
+import ru.untitled_devs.core.fsm.FSMContext;
 
 public abstract class Middleware {
     public abstract void preHandle(UpdateContext update, FSMContext ctx);

@@ -1,6 +1,8 @@
 package ru.untitled_devs.core.fsm.context;
 
 import org.junit.jupiter.api.Test;
+import ru.untitled_devs.core.fsm.DataKey;
+import ru.untitled_devs.core.fsm.FSMContext;
 import ru.untitled_devs.core.fsm.states.DefaultStates;
 import ru.untitled_devs.core.fsm.states.State;
 

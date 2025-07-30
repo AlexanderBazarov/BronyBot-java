@@ -1,8 +1,8 @@
 package ru.untitled_devs.core.fsm.storage;
 
 import org.junit.jupiter.api.Test;
-import ru.untitled_devs.core.fsm.context.DataKey;
-import ru.untitled_devs.core.fsm.context.FSMContext;
+import ru.untitled_devs.core.fsm.DataKey;
+import ru.untitled_devs.core.fsm.FSMContext;
 
 import static org.junit.jupiter.api.Assertions.*;
 
