@@ -35,6 +35,7 @@ public final class RegistrationScene extends Scene {
 	private void registerHandlers() {
 		addHandler(RegistrationStates.NAME, new RegNameHandler(bot));
 		addHandler(RegistrationStates.AGE, new RegAgeHandler(bot));
+		addHandler(RegistrationStates.GENDER, new RegGenderHandler(bot));
 		addHandler(RegistrationStates.LOCATION, new RegLocationHandler(bot, geocoder));
 		addHandler(RegistrationStates.DESCRIPTION, new RegDescriptionHandler(bot));
 		addHandler(RegistrationStates.PHOTO, new RegPhotoHandler(bot, imageService));

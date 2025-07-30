@@ -10,6 +10,7 @@ import ru.untitled_devs.bot.shared.geocoder.Geocoder;
 import ru.untitled_devs.bot.shared.image.ImageService;
 import ru.untitled_devs.bot.shared.localisation.BtnLocService;
 import ru.untitled_devs.bot.shared.localisation.ButtonKey;
+import ru.untitled_devs.bot.shared.models.Gender;
 import ru.untitled_devs.bot.shared.models.Image;
 import ru.untitled_devs.bot.shared.models.Profile;
 import ru.untitled_devs.core.client.PollingClient;
@@ -178,6 +179,44 @@ class RegistrationSceneTest {
 		assertThrows(IllegalArgumentException.class,
 			() -> router.routeUpdate(updateContext, ctx),
 			"Get age must do not throw exception when got invalid age value");
+	}
+
+	@Test
+	void getGenderGotValidGender() {
+		Message message = mock(Message.class);
+		String genderButton = BtnLocService.getLocal(ButtonKey.GENDER_FEMALE, Locale.forLanguageTag("en-US"));
+		when(message.getText()).thenReturn(genderButton);
+
+		when(updateContext.hasMessage()).thenReturn(true);
+		when(update.getMessage()).thenReturn(message);
+
+		when(ctx.getState()).thenReturn(RegistrationStates.GENDER);
+
+		Profile profile = new Profile();
+		DataKey<Profile> key = DataKey.of("RegistrationData", Profile.class);
+		when(ctx.getData(key)).thenReturn(profile);
+
+		assertDoesNotThrow(() -> router.routeUpdate(updateContext, ctx));
+		assertEquals(Gender.FEMALE, profile.getGender());
+	}
+
+	@Test
+	void getGenderGotInvalidGender() {
+		Message message = mock(Message.class);
+		String genderButton = "awbfgaowgbpaioug";
+		when(message.getText()).thenReturn(genderButton);
+
+		when(updateContext.hasMessage()).thenReturn(true);
+		when(update.getMessage()).thenReturn(message);
+
+		when(ctx.getState()).thenReturn(RegistrationStates.GENDER);
+
+		Profile profile = new Profile();
+		DataKey<Profile> key = DataKey.of("RegistrationData", Profile.class);
+		when(ctx.getData(key)).thenReturn(profile);
+
+		assertThrows(IllegalArgumentException.class,
+			() -> router.routeUpdate(updateContext, ctx));
 	}
 
 	@Test
