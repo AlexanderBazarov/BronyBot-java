@@ -143,6 +143,7 @@ public class PollingClient extends TelegramLongPollingBot implements BotClient {
 		SendPhoto sendPhoto = new SendPhoto();
 		sendPhoto.setChatId(chatId);
 		sendPhoto.setCaption(caption);
+		sendPhoto.setReplyMarkup(replyKeyboard);
 
 		InputFile file = new InputFile(imageUrl.toString());
 		sendPhoto.setPhoto(file);
