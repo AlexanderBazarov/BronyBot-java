@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class ButtonsLocalisationService {
+public class BtnLocService {
 	private static final String BUNDLE_BASE = "buttons.buttons";
 
 	public static ResourceBundle buttonBundle(Locale locale) {
