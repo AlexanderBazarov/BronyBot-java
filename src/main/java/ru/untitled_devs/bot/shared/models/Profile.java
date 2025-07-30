@@ -14,6 +14,7 @@ public final class Profile {
 	private String name;
     private String description;
     private int age;
+	private Gender gender;
     private String location;
 	private Point coordinates;
 	private boolean show;
@@ -47,6 +48,14 @@ public final class Profile {
 
 	public void setAge(int age) {
 		this.age = age;
+	}
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
 	}
 
 	public String getLocation() {
