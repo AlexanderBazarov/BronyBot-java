@@ -5,7 +5,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import ru.untitled_devs.bot.shared.localisation.ButtonKey;
-import ru.untitled_devs.bot.shared.localisation.ButtonsLocalisationService;
+import ru.untitled_devs.bot.shared.localisation.BtnLocService;
 import ru.untitled_devs.bot.shared.localisation.MessageKey;
 import ru.untitled_devs.bot.shared.localisation.MsgLocService;
 import ru.untitled_devs.core.client.BotClient;
@@ -50,13 +50,13 @@ public class MainMenuScene extends Scene {
 
 		KeyboardRow row = new KeyboardRow();
 		row.add(new KeyboardButton(
-			ButtonsLocalisationService.getLocal(ButtonKey.MY_PROFILE, loc))
+			BtnLocService.getLocal(ButtonKey.MY_PROFILE, loc))
 		);
 		row.add(new KeyboardButton(
-			ButtonsLocalisationService.getLocal(ButtonKey.VIEW_PROFILES, loc))
+			BtnLocService.getLocal(ButtonKey.VIEW_PROFILES, loc))
 		);
 		row.add(new KeyboardButton(
-			ButtonsLocalisationService.getLocal(ButtonKey.VIEW_LIKES, loc))
+			BtnLocService.getLocal(ButtonKey.VIEW_LIKES, loc))
 		);
 
 		List<KeyboardRow> rows = new ArrayList<>();
@@ -70,9 +70,9 @@ public class MainMenuScene extends Scene {
 		String text = message.getText().strip();
 		long chatId = message.getChatId();
 
-		final String myProfileButton = ButtonsLocalisationService.getLocal(ButtonKey.MY_PROFILE, loc);
-		final String viewProfilesButton = ButtonsLocalisationService.getLocal(ButtonKey.VIEW_PROFILES, loc);
-		final String viewLikesButton = ButtonsLocalisationService.getLocal(ButtonKey.VIEW_LIKES, loc);
+		final String myProfileButton = BtnLocService.getLocal(ButtonKey.MY_PROFILE, loc);
+		final String viewProfilesButton = BtnLocService.getLocal(ButtonKey.VIEW_PROFILES, loc);
+		final String viewLikesButton = BtnLocService.getLocal(ButtonKey.VIEW_LIKES, loc);
 
 		if (text.equals(myProfileButton))
 			openViewLikesScene(chatId, ctx);
