@@ -21,6 +21,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.untitled_devs.core.dispatcher.Dispatcher;
 
 import java.io.ByteArrayInputStream;
+import java.net.URL;
 import java.time.Instant;
 
 import static ru.untitled_devs.core.utils.FileUtils.getImageFileNameWithExtension;
@@ -115,23 +116,6 @@ public class PollingClient extends TelegramLongPollingBot implements BotClient {
         }
     }
 
-    @Override
-    public Message sendPhoto(long chatId, String caption, byte[] photo) {
-        SendPhoto sendPhoto = new SendPhoto();
-        sendPhoto.setChatId(chatId);
-        sendPhoto.setCaption(caption);
-
-        InputFile file = new InputFile(new ByteArrayInputStream(photo), getImageFileNameWithExtension(photo));
-        sendPhoto.setPhoto(file);
-
-        try {
-            return execute(sendPhoto);
-        } catch (TelegramApiException e) {
-            this.logger.error(e.getMessage());
-			return null;
-        }
-    }
-
 	@Override
 	public Message sendPhoto(long chatId, String caption, byte[] photo, ReplyKeyboard replyKeyboard) {
 		SendPhoto sendPhoto = new SendPhoto();
@@ -148,6 +132,31 @@ public class PollingClient extends TelegramLongPollingBot implements BotClient {
 			this.logger.error(e.getMessage());
 			return null;
 		}
+	}
+
+    @Override
+    public Message sendPhoto(long chatId, String caption, byte[] photo) {
+		return sendPhoto(chatId, caption, photo, null);
+    }
+
+	public Message sendPhoto(long chatId, String caption, URL imageUrl, ReplyKeyboard replyKeyboard) {
+		SendPhoto sendPhoto = new SendPhoto();
+		sendPhoto.setChatId(chatId);
+		sendPhoto.setCaption(caption);
+
+		InputFile file = new InputFile(imageUrl.toString());
+		sendPhoto.setPhoto(file);
+
+		try {
+			return execute(sendPhoto);
+		} catch (TelegramApiException e) {
+			this.logger.error(e.getMessage());
+			return null;
+		}
+	}
+
+	public Message sendPhoto(long chatId, String caption, URL imageUrl) {
+		return sendPhoto(chatId, caption, imageUrl, null);
 	}
 
     @Override
