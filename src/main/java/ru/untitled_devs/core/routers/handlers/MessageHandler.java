@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 public class MessageHandler implements Handler {
-
     private final List<Filter> filters = new ArrayList<>();
     private final BiConsumer<Message, FSMContext> action;
 
@@ -28,7 +27,6 @@ public class MessageHandler implements Handler {
 
     @Override
     public void handleUpdate(UpdateContext update, FSMContext ctx) {
-		Message message = update.getUpdate().getMessage();
         action.accept(update.getUpdate().getMessage(), ctx);
     }
 
