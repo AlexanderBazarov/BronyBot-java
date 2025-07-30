@@ -23,6 +23,11 @@ import ru.untitled_devs.core.client.PollingClient;
 import ru.untitled_devs.core.dispatcher.Dispatcher;
 import ru.untitled_devs.core.fsm.storage.InMemoryStorage;
 import ru.untitled_devs.core.routers.scenes.SceneManager;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.AwsCredentials;
+import software.amazon.awssdk.regions.Region;
+
+import java.net.URI;
 
 public class Main {
     public static void main(String[] args) {
@@ -37,8 +42,15 @@ public class Main {
 			new YandexGeocoder(Config.getGeocodingConfig().getApiUrl(),
 				Config.getGeocodingConfig().getApiKey());
 
-		ImageService imageService = new ImageService(Config.getImagesConfig().getImagesPath(), datastore);
 		RegistrationService regService = new RegistrationService(datastore);
+
+		URI endpoint = URI.create(Config.getS3Config().getEndpoint());
+		String accessKey = Config.getS3Config().getAccessKey();
+		String secretKey = Config.getS3Config().getSecretKey();
+		String bucketName = Config.getS3Config().getBucketName();
+		AwsCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
+		Region region = Region.US_EAST_1;
+		ImageService imageService = new ImageService(endpoint, credentials, region, bucketName, datastore);
 
 		try {
 			TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);

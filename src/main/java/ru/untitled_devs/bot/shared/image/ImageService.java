@@ -5,42 +5,68 @@ import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import ru.untitled_devs.bot.shared.models.Image;
 import ru.untitled_devs.bot.shared.repositories.ImageRepo;
 import ru.untitled_devs.core.utils.FileUtils;
+import software.amazon.awssdk.auth.credentials.AwsCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
+import java.net.URI;
+import java.net.URL;
+import java.time.Duration;
 import java.util.Comparator;
 import java.util.List;
 
 public class ImageService {
-	private final Path imagesPath;
+	private final S3Client client;
+	private final S3Presigner presigner;
+	private final String bucketName;
 	private final ImageRepo imageRepo;
 
-	public ImageService(Path imagesPath, Datastore datastore) {
-		this.imagesPath = imagesPath;
+	public ImageService(URI endpoint, AwsCredentials credentials,
+						Region region, String bucketName, Datastore datastore) {
 		this.imageRepo = new ImageRepo(datastore);
+		this.bucketName = bucketName;
+
+		StaticCredentialsProvider provider = StaticCredentialsProvider.create(credentials);
+
+		client = S3Client.builder()
+			.endpointOverride(endpoint)
+			.region(region)
+			.credentialsProvider(provider)
+			.build();
+
+		presigner = S3Presigner.builder()
+			.endpointOverride(endpoint)
+			.region(region)
+			.credentialsProvider(provider)
+			.build();
 	}
 
 	public Image saveImage(InputStream in, String fileId) throws IOException {
 		byte[] bytes = in.readAllBytes();
 
 		String ext = FileUtils.getImageFileExtension(bytes);
-
 		String fileName = fileId + ext;
-		Path target = imagesPath.resolve(fileName);
+		String imagesPath = "images/";
 
-		Files.createDirectories(target.getParent());
+		PutObjectRequest request = PutObjectRequest.builder()
+			.bucket(bucketName)
+			.key(imagesPath + fileName)
+			.build();
 
-		Files.createDirectories(target.getParent());
-		Files.write(target, bytes, StandardOpenOption.CREATE);
-
-		Files.write(target, bytes, StandardOpenOption.CREATE);
+		client.putObject(request,
+			RequestBody.fromBytes(bytes));
 
 		Image img = new Image();
 		img.setFileId(fileId);
-		img.setPath(fileName);
+		img.setPath(imagesPath + fileName);
 		return imageRepo.save(img);
 	}
 
@@ -48,9 +74,18 @@ public class ImageService {
 		return imageRepo.findByFileId(fileId);
 	}
 
-	public byte[] loadImage(Image image) throws IOException {
-		Path path = imagesPath.resolve(image.getPath());
-		return Files.readAllBytes(path);
+	public URL getImageURL(Image image) {
+		GetObjectRequest request = GetObjectRequest.builder()
+			.bucket(bucketName)
+			.key(image.getPath())
+			.build();
+
+		GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+			.getObjectRequest(request)
+			.signatureDuration(Duration.ofMinutes(5))
+			.build();
+
+		return presigner.presignGetObject(presignRequest).url();
 	}
 
 	public PhotoSize getLargestPhotoSize(List<PhotoSize> photos) {
