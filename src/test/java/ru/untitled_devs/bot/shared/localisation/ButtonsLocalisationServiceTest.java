@@ -25,7 +25,7 @@ public class ButtonsLocalisationServiceTest {
 		try (MockedStatic<ResourceBundle> bundleMock = mockStatic(ResourceBundle.class)) {
 			bundleMock.when(() -> ResourceBundle.getBundle(anyString(), eq(testLocale))).thenReturn(fakeBundle);
 
-			String message = ButtonsLocalisationService.getLocal(key, testLocale);
+			String message = BtnLocService.getLocal(key, testLocale);
 			assertEquals("Hello!", message);
 		}
 	}
@@ -45,7 +45,7 @@ public class ButtonsLocalisationServiceTest {
 		try (MockedStatic<ResourceBundle> bundleMock = mockStatic(ResourceBundle.class)) {
 			bundleMock.when(() -> ResourceBundle.getBundle(anyString(), eq(testLocale))).thenReturn(fakeBundle);
 
-			String message = ButtonsLocalisationService.getLocal(key, testLocale, "World");
+			String message = BtnLocService.getLocal(key, testLocale, "World");
 			assertEquals("Hello, World!", message);
 		}
 	}
@@ -66,7 +66,7 @@ public class ButtonsLocalisationServiceTest {
 		try (MockedStatic<ResourceBundle> bundleMock = mockStatic(ResourceBundle.class)) {
 			bundleMock.when(() -> ResourceBundle.getBundle(anyString(), eq(testLocale))).thenReturn(fakeBundle);
 
-			String message = ButtonsLocalisationService.getLocal(key, testLocale);
+			String message = BtnLocService.getLocal(key, testLocale);
 			assertEquals("???", message);
 		}
 	}
@@ -87,7 +87,7 @@ public class ButtonsLocalisationServiceTest {
 		try (MockedStatic<ResourceBundle> bundleMock = mockStatic(ResourceBundle.class)) {
 			bundleMock.when(() -> ResourceBundle.getBundle(anyString(), eq(testLocale))).thenReturn(fakeBundle);
 
-			String message = ButtonsLocalisationService.getLocal(key, testLocale, "Test");
+			String message = BtnLocService.getLocal(key, testLocale, "Test");
 			assertEquals("???", message);
 		}
 	}
