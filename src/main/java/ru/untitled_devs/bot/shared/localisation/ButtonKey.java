@@ -13,6 +13,10 @@ public enum ButtonKey {
 	UPDATE_FORM("update_form"),
 	CHANGE_LANGUAGE("change_language"),
 
+	GENDER_MALE("gender_male"),
+	GENDER_FEMALE("gender_female"),
+	GENDER_NONE("gender_none"),
+
 	REFUSE("refuse"),
 	CANCEL("cancel"),
 	SKIP_WORD("skip_word"),
@@ -32,6 +36,7 @@ public enum ButtonKey {
 	BAN("ban"),
 
 	BACK("back");
+
 
 	private final String key;
 
