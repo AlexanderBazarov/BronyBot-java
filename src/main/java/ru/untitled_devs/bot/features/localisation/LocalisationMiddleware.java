@@ -27,13 +27,15 @@ public class LocalisationMiddleware extends Middleware {
 
 		if (loc == null) {
 			DataKey<Update> updateKey = DataKey.of("register:Update", Update.class);
-			DataKey<State> stateKey = DataKey.of("register:Update", State.class);
+			DataKey<State> stateKey = DataKey.of("register:State", State.class);
+			DataKey<String> sceneIdKey = DataKey.of("register:Scene", String.class);
 
 			ctx.setData(updateKey, update.getUpdate());
 			ctx.setData(stateKey, ctx.getState());
+			ctx.setData(sceneIdKey, ctx.getSceneId());
 
-			sceneManager.enterScene("lang", update.getChatId(), ctx);
-			stopMiddlewareChain();
+			sceneManager.enterScene(update.getChatId(), "lang", ctx);
+			stopRouting();
 		}
 
 	}
