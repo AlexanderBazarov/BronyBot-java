@@ -4,8 +4,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-import ru.untitled_devs.bot.shared.localisation.ButtonKey;
 import ru.untitled_devs.bot.shared.localisation.BtnLocService;
+import ru.untitled_devs.bot.shared.localisation.ButtonKey;
 import ru.untitled_devs.bot.shared.localisation.MessageKey;
 import ru.untitled_devs.bot.shared.localisation.MsgLocService;
 import ru.untitled_devs.core.client.BotClient;
@@ -83,13 +83,13 @@ public class MainMenuScene extends Scene {
 	}
 	
 	private void openMyProfileScene(long chatId, FSMContext ctx) {
-		sceneManager.enterScene("myProfile", chatId, ctx);
+		sceneManager.enterScene(chatId, "myProfile", ctx);
 	}
 	private void openViewProfilesScene(long chatId, FSMContext ctx) {
-		sceneManager.enterScene("viewProfiles", chatId, ctx);
+		sceneManager.enterScene(chatId, "viewProfiles", ctx);
 	}
 	private void openViewLikesScene(long chatId, FSMContext ctx) {
-		sceneManager.enterScene("viewLikes", chatId, ctx);
+		sceneManager.enterScene(chatId, "viewLikes", ctx);
 	}
 
 }
