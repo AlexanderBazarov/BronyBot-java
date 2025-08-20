@@ -7,22 +7,24 @@ import ru.untitled_devs.core.fsm.states.DefaultStates;
 import ru.untitled_devs.core.routers.UpdateRouter;
 import ru.untitled_devs.core.routers.filters.CommandStart;
 import ru.untitled_devs.core.routers.handlers.MessageHandler;
-
+import ru.untitled_devs.core.routers.scenes.SceneManager;
 
 public final class StartRouter extends UpdateRouter {
     private final PollingClient bot;
-    public StartRouter(PollingClient bot) {
+	private final SceneManager sceneManager;
+    public StartRouter(PollingClient bot, SceneManager sceneManager) {
         this.bot = bot;
+		this.sceneManager = sceneManager;
         this.registerHandlers();
     }
 
     private void registerHandlers() {
-        this.addHandler(DefaultStates.DEFAULT,
+        this.addHandler(DefaultStates.ANY,
                 new MessageHandler(this::start,
                                     new CommandStart()));
     }
 
 	private void start(Message message, FSMContext ctx) {
-
+		sceneManager.enterScene(message.getChatId(), "menu", ctx);
     }
 }
