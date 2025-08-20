@@ -13,5 +13,5 @@ public interface Router {
 
 	Map<State, List<Handler>> getHandlers();
 
-	boolean routeUpdate(UpdateContext update, FSMContext ctx);
+	void routeUpdate(UpdateContext update, FSMContext ctx);
 }

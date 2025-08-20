@@ -3,6 +3,7 @@ package ru.untitled_devs.core.routers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.untitled_devs.core.context.UpdateContext;
+import ru.untitled_devs.core.exceptions.StopRoutingException;
 import ru.untitled_devs.core.fsm.FSMContext;
 import ru.untitled_devs.core.fsm.states.State;
 import ru.untitled_devs.core.routers.handlers.Handler;
@@ -59,7 +60,9 @@ class RouterTest {
         router.addHandler(state, handlerTrue);
         router.addHandler(state, handlerFalse);
 
-        router.routeUpdate(update, ctx);
+		try {
+			router.routeUpdate(update, ctx);
+		} catch (StopRoutingException e) {}
 
         verify(handlerTrue, times(1)).handleUpdate(update, ctx);
         verify(handlerFalse, never()).handleUpdate(any(), any());

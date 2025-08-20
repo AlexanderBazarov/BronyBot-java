@@ -1,7 +1,9 @@
 package ru.untitled_devs.core.routers;
 
 import ru.untitled_devs.core.context.UpdateContext;
+import ru.untitled_devs.core.exceptions.StopRoutingException;
 import ru.untitled_devs.core.fsm.FSMContext;
+import ru.untitled_devs.core.fsm.states.DefaultStates;
 import ru.untitled_devs.core.fsm.states.State;
 import ru.untitled_devs.core.routers.handlers.Handler;
 
@@ -25,14 +27,21 @@ public class UpdateRouter implements Router {
     }
 
 	@Override
-    public boolean routeUpdate(UpdateContext update, FSMContext ctx) {
+    public void routeUpdate(UpdateContext update, FSMContext ctx) {
         List<Handler> stateHandlers = handlers.getOrDefault(ctx.getState(), List.of());
         for (Handler handler : stateHandlers) {
             if (handler.canHandle(update, ctx)) {
                 handler.handleUpdate(update, ctx);
-				return true;
+				throw new StopRoutingException();
             }
         }
-		return false;
+
+		List<Handler> anyHandlers = handlers.getOrDefault(DefaultStates.ANY, List.of());
+		for (Handler handler : anyHandlers) {
+			if (handler.canHandle(update, ctx)) {
+				handler.handleUpdate(update, ctx);
+				throw new StopRoutingException();
+			}
+		}
     }
 }
