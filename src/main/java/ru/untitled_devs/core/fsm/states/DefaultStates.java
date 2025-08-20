@@ -1,5 +1,6 @@
 package ru.untitled_devs.core.fsm.states;
 
 public class DefaultStates extends StatesGroup {
+	public static AnyState ANY = new AnyState();
     public static State DEFAULT = state(DefaultStates.class, "Default");
 }
