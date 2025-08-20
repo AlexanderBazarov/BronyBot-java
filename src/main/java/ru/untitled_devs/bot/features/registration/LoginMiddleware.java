@@ -23,7 +23,7 @@ public class LoginMiddleware extends Middleware {
 
 		State state = ctx.getState();
 		if (! StatesGroup.contains(RegistrationStates.class, state)) {
-			sceneManager.enterScene("register", update.getChatId(), ctx);
+			sceneManager.enterScene(update.getChatId(), "register", ctx);
 			stopRouting();
 		}
 	}
