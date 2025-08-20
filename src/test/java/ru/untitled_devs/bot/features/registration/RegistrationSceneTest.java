@@ -15,6 +15,7 @@ import ru.untitled_devs.bot.shared.models.Image;
 import ru.untitled_devs.bot.shared.models.Profile;
 import ru.untitled_devs.core.client.PollingClient;
 import ru.untitled_devs.core.context.UpdateContext;
+import ru.untitled_devs.core.exceptions.StopRoutingException;
 import ru.untitled_devs.core.fsm.DataKey;
 import ru.untitled_devs.core.fsm.FSMContext;
 import ru.untitled_devs.core.routers.scenes.SceneManager;
@@ -85,7 +86,8 @@ class RegistrationSceneTest {
 		DataKey<Profile> key = DataKey.of("RegistrationData", Profile.class);
 		when(ctx.getData(key)).thenReturn(profile);
 
-		assertDoesNotThrow(() -> router.routeUpdate(updateContext, ctx));
+		assertThrows(StopRoutingException.class,
+			() -> router.routeUpdate(updateContext, ctx));
 		assertEquals("Саня", profile.getName());
 	}
 
@@ -105,7 +107,8 @@ class RegistrationSceneTest {
 		DataKey<Profile> key = DataKey.of("RegistrationData", Profile.class);
 		when(ctx.getData(key)).thenReturn(profile);
 
-		assertDoesNotThrow(() -> router.routeUpdate(updateContext, ctx));
+		assertThrows(StopRoutingException.class,
+			() -> router.routeUpdate(updateContext, ctx));
 		assertNull(profile.getName());
 	}
 
@@ -125,7 +128,8 @@ class RegistrationSceneTest {
 		DataKey<Profile> key = DataKey.of("RegistrationData", Profile.class);
 		when(ctx.getData(key)).thenReturn(profile);
 
-		assertDoesNotThrow(() -> router.routeUpdate(updateContext, ctx),
+		assertThrows(StopRoutingException.class,
+			() -> router.routeUpdate(updateContext, ctx),
 			"Get age must do not throw any exceptions when got valid age type");
 
 		assertEquals(15, profile.getAge(), "Age must be changed");
@@ -196,7 +200,8 @@ class RegistrationSceneTest {
 		DataKey<Profile> key = DataKey.of("RegistrationData", Profile.class);
 		when(ctx.getData(key)).thenReturn(profile);
 
-		assertDoesNotThrow(() -> router.routeUpdate(updateContext, ctx));
+		assertThrows(StopRoutingException.class,
+			() -> router.routeUpdate(updateContext, ctx));
 		assertEquals(Gender.FEMALE, profile.getGender());
 	}
 
@@ -236,9 +241,8 @@ class RegistrationSceneTest {
 
 		when(ctx.getState()).thenReturn(RegistrationStates.LOCATION);
 
-		assertDoesNotThrow(
-			() -> router.routeUpdate(updateContext, ctx)
-		);
+		assertThrows(StopRoutingException.class,
+			() -> router.routeUpdate(updateContext, ctx));
 
 		assertEquals("Екатеринбург", profile.getLocation());
 		assertEquals(Arrays.asList(123.0, 123.0), profile.getCoordinates().getCoordinates().getValues());
@@ -285,9 +289,8 @@ class RegistrationSceneTest {
 
 		when(ctx.getState()).thenReturn(RegistrationStates.LOCATION);
 
-		assertDoesNotThrow(
-			() -> router.routeUpdate(updateContext, ctx)
-		);
+		assertThrows(StopRoutingException.class,
+			() -> router.routeUpdate(updateContext, ctx));
 
 		assertEquals("Екатеринбург", profile.getLocation());
 		assertEquals(Arrays.asList(123.0, 123.0), profile.getCoordinates().getCoordinates().getValues());
@@ -311,9 +314,8 @@ class RegistrationSceneTest {
 
 		when(ctx.getState()).thenReturn(RegistrationStates.LOCATION);
 
-		assertDoesNotThrow(
-			() -> router.routeUpdate(updateContext, ctx)
-		);
+		assertThrows(StopRoutingException.class,
+			() -> router.routeUpdate(updateContext, ctx));
 
 		assertNull(profile.getLocation());
 		assertNull(profile.getCoordinates());
@@ -336,9 +338,8 @@ class RegistrationSceneTest {
 		when(update.getMessage()).thenReturn(message);
 		when(ctx.getState()).thenReturn(RegistrationStates.DESCRIPTION);
 
-		assertDoesNotThrow(
-			() -> router.routeUpdate(updateContext, ctx)
-		);
+		assertThrows(StopRoutingException.class,
+			() -> router.routeUpdate(updateContext, ctx));
 
 		assertEquals("Test description", profile.getDescription());
 	}
@@ -384,9 +385,8 @@ class RegistrationSceneTest {
 
 		when(ctx.getState()).thenReturn(RegistrationStates.DESCRIPTION);
 
-		assertDoesNotThrow(
-			() -> router.routeUpdate(updateContext, ctx)
-		);
+		assertThrows(StopRoutingException.class,
+			() -> router.routeUpdate(updateContext, ctx));
 
 		assertEquals("No description.", profile.getDescription());
 	}
@@ -424,9 +424,8 @@ class RegistrationSceneTest {
 
 		when(ctx.getState()).thenReturn(RegistrationStates.PHOTO);
 
-		assertDoesNotThrow(
-			() -> router.routeUpdate(updateContext, ctx)
-		);
+		assertThrows(StopRoutingException.class,
+			() -> router.routeUpdate(updateContext, ctx));
 	}
 
 	@Test

@@ -3,8 +3,8 @@ package ru.untitled_devs.bot.features.registration.handlers;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import ru.untitled_devs.bot.features.registration.RegistrationService;
 import ru.untitled_devs.bot.features.registration.RegistrationStates;
-import ru.untitled_devs.bot.shared.localisation.ButtonKey;
 import ru.untitled_devs.bot.shared.localisation.BtnLocService;
+import ru.untitled_devs.bot.shared.localisation.ButtonKey;
 import ru.untitled_devs.bot.shared.localisation.MessageKey;
 import ru.untitled_devs.bot.shared.localisation.MsgLocService;
 import ru.untitled_devs.bot.shared.models.Profile;
@@ -59,7 +59,7 @@ public class RegFinishHandler extends RegStepHandler {
 
 			regService.registerUser(userData, profileData);
 			bot.sendMessage(chatId, MsgLocService.getLocal(MessageKey.SUCCESSFUL_REGISTRATION, loc));
-			sceneManager.enterScene("menu", chatId, ctx);
+			sceneManager.enterScene(chatId, "menu", ctx);
 			return;
 		}
 
