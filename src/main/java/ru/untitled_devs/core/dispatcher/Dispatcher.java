@@ -22,8 +22,9 @@ import java.util.List;
 public class Dispatcher {
 	private final UserQueueExecutor userQueueExecutor;
 	private final List<UpdateRouter> routers = new ArrayList<>();
-	private final Storage storage;
+	private final List<UpdateRouter> wildcardRouters = new ArrayList<>();
 	private final List<Middleware> middlewares = new ArrayList<>();
+	private final Storage storage;
 	private final Logger logger = LoggerFactory.getLogger(Dispatcher.class);
 	private final SceneManager sceneManager;
 
@@ -35,11 +36,15 @@ public class Dispatcher {
 	}
 
 	public void addRouter(UpdateRouter router) {
-		this.routers.add(router);
+		routers.add(router);
+	}
+
+	public void addWildcardRouter(UpdateRouter router) {
+		wildcardRouters.add(router);
 	}
 
 	public void addMiddleware(Middleware middleware) {
-		this.middlewares.add(middleware);
+		middlewares.add(middleware);
 	}
 
 	public void feedUpdate(Update update) {
@@ -64,12 +69,12 @@ public class Dispatcher {
 
 		StorageKey key = new StorageKey(updateContext.getChatId(), updateContext.getUserId());
 
-		FSMContext fsmContext = this.storage.getOrCreateContext(key);
+		FSMContext fsmContext = storage.getOrCreateContext(key);
 
 		try {
 			runMiddlewares(updateContext, fsmContext);
+			handleWildcardRouters(updateContext, fsmContext);
 			handleScene(updateContext, fsmContext);
-
 			handleRouters(updateContext, fsmContext);
 		} catch (StopRoutingException e) {
 			return;
@@ -87,6 +92,16 @@ public class Dispatcher {
 		}
 	}
 
+	private void handleWildcardRouters(UpdateContext ctx, FSMContext fsmCtx) throws StopRoutingException {
+		for (UpdateRouter router : wildcardRouters) {
+			try {
+				router.routeUpdate(ctx, fsmCtx);
+			} catch (Exception e) {
+				logger.error("Router {} failed: {}", router.getClass().getSimpleName(), ctx.getUpdate(), e);
+			}
+		}
+	}
+
 	private void handleScene(UpdateContext ctx, FSMContext fsmCtx) throws StopRoutingException {
 		if (fsmCtx.getSceneId() != null) {
 			Scene scene = sceneManager.getScene(fsmCtx.getSceneId());
@@ -94,7 +109,10 @@ public class Dispatcher {
 			try {
 				scene.routeUpdate(ctx, fsmCtx);
 				logger.debug("Scene handled update: {}", fsmCtx.getSceneId());
-			} catch (Exception e) {
+			}
+			catch (StopRoutingException ignored) {}
+
+			catch (Exception e) {
 				logger.error("Scene {} failed: {}",
 					sceneManager.getScene(fsmCtx.getSceneId()).getClass().getSimpleName(), ctx.getUpdate(), e);
 			}
