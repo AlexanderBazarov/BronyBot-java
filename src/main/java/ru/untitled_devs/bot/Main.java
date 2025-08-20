@@ -15,7 +15,7 @@ import ru.untitled_devs.bot.features.menu.MainMenuScene;
 import ru.untitled_devs.bot.features.registration.LoginMiddleware;
 import ru.untitled_devs.bot.features.registration.RegistrationScene;
 import ru.untitled_devs.bot.features.registration.RegistrationService;
-import ru.untitled_devs.bot.features.start.StartRouter;
+import ru.untitled_devs.bot.features.start.StartMiddleware;
 import ru.untitled_devs.bot.shared.geocoder.Geocoder;
 import ru.untitled_devs.bot.shared.geocoder.yandex.YandexGeocoder;
 import ru.untitled_devs.bot.shared.image.ImageService;
@@ -63,9 +63,7 @@ public class Main {
 
 			dispatcher.addMiddleware(new LocalisationMiddleware(sceneManager));
 			dispatcher.addMiddleware(new LoginMiddleware(sceneManager, regService));
-
-			dispatcher.addRouter(new StartRouter(bot));
-			dispatcher.addRouter(new LocalisationScene(bot));
+			dispatcher.addMiddleware(new StartMiddleware(sceneManager));
 
             botsApi.registerBot(bot);
         } catch (Exception e) {
