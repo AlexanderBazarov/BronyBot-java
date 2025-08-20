@@ -17,7 +17,7 @@ public class SceneManager {
 		return scenes.get(sceneId);
 	}
 
-	public void enterScene(String sceneId, long chatId, FSMContext ctx) {
+	public void enterScene(long chatId, String sceneId, FSMContext ctx) {
 		leaveCurrentScene(chatId, ctx);
 
 		Scene scene = scenes.get(sceneId);
