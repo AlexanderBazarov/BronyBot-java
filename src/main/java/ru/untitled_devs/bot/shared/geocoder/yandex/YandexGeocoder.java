@@ -2,6 +2,7 @@ package ru.untitled_devs.bot.shared.geocoder.yandex;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.Inject;
 import ru.untitled_devs.bot.shared.geocoder.Coordinates;
 import ru.untitled_devs.bot.shared.geocoder.Geocoder;
 import ru.untitled_devs.bot.shared.utils.URIBuilder;
@@ -17,6 +18,7 @@ public final class YandexGeocoder extends Geocoder {
 	private static final ObjectMapper mapper = new ObjectMapper()
 		.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
 
+	@Inject
 	public YandexGeocoder(String apiUrl, String apiKey) {
 		super(apiUrl, apiKey);
 	}

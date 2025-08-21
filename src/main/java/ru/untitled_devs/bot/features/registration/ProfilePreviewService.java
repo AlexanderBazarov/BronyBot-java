@@ -1,5 +1,6 @@
 package ru.untitled_devs.bot.features.registration;
 
+import com.google.inject.Inject;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
@@ -20,6 +21,7 @@ public class ProfilePreviewService {
 	private final ImageService imageService;
 	private final BotClient bot;
 
+	@Inject
 	public ProfilePreviewService(BotClient bot, ImageService imageService) {
 		this.bot = bot;
 		this.imageService = imageService;

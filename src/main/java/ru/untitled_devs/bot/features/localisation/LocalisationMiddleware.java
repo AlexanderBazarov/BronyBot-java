@@ -1,5 +1,6 @@
 package ru.untitled_devs.bot.features.localisation;
 
+import com.google.inject.Inject;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.untitled_devs.core.context.UpdateContext;
 import ru.untitled_devs.core.fsm.DataKey;
@@ -13,6 +14,8 @@ import java.util.Locale;
 
 public class LocalisationMiddleware extends Middleware {
 	private final SceneManager sceneManager;
+
+	@Inject
 	public LocalisationMiddleware(SceneManager sceneManager) {
 		this.sceneManager = sceneManager;
 	}

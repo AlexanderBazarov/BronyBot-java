@@ -1,5 +1,6 @@
 package ru.untitled_devs.bot.features.registration;
 
+import com.google.inject.Inject;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -18,6 +19,7 @@ public class PhotoProcessor {
 	public final ImageService imageService;
 	private final int MAX_FILE_SIZE;
 
+	@Inject
 	public PhotoProcessor(BotClient bot, ImageService imageService, int maxFileSize) {
 		this.bot = bot;
 		this.imageService = imageService;

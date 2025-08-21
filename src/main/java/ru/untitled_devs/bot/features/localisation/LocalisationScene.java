@@ -1,5 +1,6 @@
 package ru.untitled_devs.bot.features.localisation;
 
+import com.google.inject.Inject;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -22,6 +23,7 @@ import java.util.Locale;
 public class LocalisationScene extends Scene {
 	private final PollingClient bot;
 
+	@Inject
 	public LocalisationScene(PollingClient bot) {
 		this.bot = bot;
 

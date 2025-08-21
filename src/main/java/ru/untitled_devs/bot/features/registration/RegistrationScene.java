@@ -1,5 +1,6 @@
 package ru.untitled_devs.bot.features.registration;
 
+import com.google.inject.Inject;
 import ru.untitled_devs.bot.features.registration.handlers.*;
 import ru.untitled_devs.bot.shared.geocoder.Geocoder;
 import ru.untitled_devs.bot.shared.image.ImageService;
@@ -21,6 +22,7 @@ public final class RegistrationScene extends Scene {
 	private final ImageService imageService;
 	private final SceneManager sceneManager;
 
+	@Inject
 	public RegistrationScene(BotClient bot, RegistrationService regService,
 							 Geocoder geocoder, ImageService imageService, SceneManager sceneManager) {
 		this.bot = bot;

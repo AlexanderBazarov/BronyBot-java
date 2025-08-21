@@ -1,5 +1,6 @@
 package ru.untitled_devs.bot.features.start;
 
+import com.google.inject.Inject;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import ru.untitled_devs.core.client.PollingClient;
 import ru.untitled_devs.core.fsm.FSMContext;
@@ -12,6 +13,8 @@ import ru.untitled_devs.core.routers.scenes.SceneManager;
 public final class StartRouter extends UpdateRouter {
     private final PollingClient bot;
 	private final SceneManager sceneManager;
+
+	@Inject
     public StartRouter(PollingClient bot, SceneManager sceneManager) {
         this.bot = bot;
 		this.sceneManager = sceneManager;

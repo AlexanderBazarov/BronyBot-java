@@ -1,5 +1,6 @@
 package ru.untitled_devs.bot.shared.image;
 
+import com.google.inject.Inject;
 import dev.morphia.Datastore;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import ru.untitled_devs.bot.shared.models.Image;
@@ -29,6 +30,7 @@ public class ImageService {
 	private final String bucketName;
 	private final ImageRepo imageRepo;
 
+	@Inject
 	public ImageService(URI endpoint, AwsCredentials credentials,
 						Region region, String bucketName, Datastore datastore) {
 		this.imageRepo = new ImageRepo(datastore);

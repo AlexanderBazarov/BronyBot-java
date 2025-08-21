@@ -1,5 +1,6 @@
 package ru.untitled_devs.bot.features.menu;
 
+import com.google.inject.Inject;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
@@ -24,6 +25,7 @@ public class MainMenuScene extends Scene {
 
 	private final static DataKey<Locale> langKey = DataKey.of("lang", Locale.class);
 
+	@Inject
 	public MainMenuScene(BotClient bot, SceneManager sceneManager) {
 		this.bot = bot;
 		this.sceneManager = sceneManager;

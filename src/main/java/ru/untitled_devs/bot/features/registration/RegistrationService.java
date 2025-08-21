@@ -1,5 +1,6 @@
 package ru.untitled_devs.bot.features.registration;
 
+import com.google.inject.Inject;
 import dev.morphia.Datastore;
 import ru.untitled_devs.bot.shared.models.Profile;
 import ru.untitled_devs.bot.shared.models.User;
@@ -13,6 +14,7 @@ public final class RegistrationService {
 	private final UserRepo userRepo;
 	private final ProfileRepo profileRepo;
 
+	@Inject
 	public RegistrationService(Datastore datastore) {
 		userRepo = new UserRepo(datastore);
 		profileRepo = new ProfileRepo(datastore);

@@ -1,5 +1,6 @@
 package ru.untitled_devs.bot.features.registration;
 
+import com.google.inject.Inject;
 import ru.untitled_devs.core.context.UpdateContext;
 import ru.untitled_devs.core.fsm.FSMContext;
 import ru.untitled_devs.core.fsm.states.State;
@@ -11,6 +12,7 @@ public class LoginMiddleware extends Middleware {
 	private final SceneManager sceneManager;
 	private final RegistrationService regService;
 
+	@Inject
 	public LoginMiddleware(SceneManager sceneManager, RegistrationService regService) {
 		this.sceneManager = sceneManager;
 		this.regService = regService;
