@@ -1,46 +1,61 @@
-BronyMatch Source-Available License v1.0
-Copyright © 2025 Alexander Bazarov. All Rights Reserved.
+BronyMatch Source-Available License v1.1
+Copyright © 2025 Alexander Bazarov. All rights reserved.
 
-1.	Definitions
+1. Definitions
 
-For the purposes of this License:
-1.1. “Software” means the source code, object code, documentation, design, structure, and any associated files of the BronyMatch project.
+1.1. “Software” means the source code, object code, documentation, designs, structure, and any associated files of the BronyMatch project.
 1.2. “Licensor” means Alexander Bazarov, the sole copyright holder of the Software.
-1.3. “You” or “Licensee” means any individual or legal entity accessing or viewing the Software.
-	
-2.	Grant of License
+1.3. “Licensee” or “You” means any individual or legal entity accessing, receiving, or using the Software.
+1.4. “Modification” means any change, adaptation, translation, compilation, combination with other software, or creation of derivative works based on the Software.
 
-Subject to the terms and conditions of this License, the Licensor grants the Licensee a limited, non-exclusive, non-transferable, revocable right to:
-(a) Access and read the Software solely for the purpose of personal review, study, and evaluation.
+2. Grant of License
 
-No other rights are granted. All rights not expressly granted herein are reserved by the Licensor.
-	
-3.	Restrictions
+Subject to the terms and conditions of this License, the Licensor grants the Licensee a limited, non-exclusive, non-transferable, and revocable right to:
+(a) Copy, use, and distribute the Software in source or object (compiled) form for non-commercial purposes;
+(b) Modify the Software and distribute Modifications in source form for non-commercial purposes;
+(c) Use the Software and Modifications for personal, educational, research, and other non-commercial projects.
 
-The Licensee shall not, without prior express written permission from the Licensor:
-(a) Use the Software, in whole or in part, for any commercial or non-commercial purpose, including but not limited to deploying, hosting, or integrating it into any product or service;
-(b) Modify, adapt, translate, compile, or create derivative works of the Software;
-(c) Distribute, sublicense, rent, lease, loan, sell, or otherwise transfer the Software or any portion thereof;
-(d) Remove, obscure, or alter any copyright, trademark, or other proprietary notices contained within the Software.
-	
-4.	Intellectual Property Rights
+3. Conditions on Distribution and Modification
 
-The Software is protected by copyright laws, international copyright treaties, and other intellectual property laws and treaties. The Licensor retains exclusive ownership of all rights, title, and interest in and to the Software. No rights of ownership are transferred to the Licensee under this License.
-	
-5.	Termination
+3.1. Non-Commercial Use
+(a) Any distribution of the Software, object code, or Modifications is permitted only for non-commercial purposes. “Non-commercial” means not primarily intended for or directed toward commercial advantage or monetary compensation. Any commercial use, sale, licensing, hosting, or other monetization of the Software or its Modifications requires explicit prior written permission from the Licensor.
 
-This License is effective until terminated. The License will terminate automatically without notice if the Licensee breaches any provision of this License. Upon termination, the Licensee must immediately cease all access to the Software and destroy all copies, whether partial or complete, in their possession.
-	
-6.	Disclaimer of Warranty
+3.2. Attribution and Notices
+(a) You must retain all copyright notices, license notices, and other proprietary notices present in the original Software.
+(b) Any distribution of the Software or Modifications must include a copy of this license and a NOTICE file that identifies changes made and credits the original Licensor (Alexander Bazarov).
 
-THE SOFTWARE IS PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
-	
-7.	Limitation of Liability
+3.3. ShareAlike for Modifications
+(a) Any Modifications that are distributed must be licensed under the same terms as this License (BronyMatch Source-Available License v1.1). In other words, distributed Modifications must remain non-commercial and carry the same attribution, NOTICE, and license requirements.
 
-IN NO EVENT SHALL THE LICENSOR BE LIABLE FOR ANY DAMAGES, INCLUDING WITHOUT LIMITATION DIRECT, INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES, ARISING OUT OF OR IN CONNECTION WITH THE USE OR INABILITY TO USE THE SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
-	
-8.	Governing Law and Jurisdiction
+4. Restrictions
 
-This License shall be governed by and construed in accordance with the laws of the Republic of Kazakhstan, without regard to its conflict of law provisions. Any disputes arising from or related to this License shall be subject to the exclusive jurisdiction of the competent courts of the Republic of Kazakhstan.
+Except for the rights expressly granted in Section 2, the Licensee shall not, without the Licensor’s prior express written permission:
+(a) Use the Software or Modifications for commercial purposes, including selling, licensing, renting, leasing, hosting, or otherwise deriving direct commercial benefit;
+(b) Remove, alter, or obscure any copyright, trademark, or other proprietary notices in the Software;
+(c) Sublicense, assign, transfer, or otherwise convey the Software or Modifications outside the scope of this License.
 
-By accessing or viewing the Software, you acknowledge that you have read, understood, and agreed to be bound by the terms of this License.
+5. Intellectual Property Rights
+
+The Software is protected by copyright laws and international treaties. The Licensor retains all rights, title, and interest in and to the Software. This License does not transfer ownership.
+
+6. Termination
+
+This License is effective until terminated. The License automatically terminates if the Licensee breaches any term of this License. Upon termination, the Licensee must immediately cease all use and distribution of the Software and Modifications and destroy all copies, in whole or in part.
+
+7. Warranty Disclaimer
+
+THE SOFTWARE IS PROVIDED “AS IS,” WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+
+8. Limitation of Liability
+
+IN NO EVENT SHALL THE LICENSOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES ARISING OUT OF OR IN CONNECTION WITH THE SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+9. Governing Law and Jurisdiction
+
+This License shall be governed by and construed in accordance with the laws of the Republic of Kazakhstan, without regard to conflict of law principles. Any disputes arising from or related to this License shall be subject to the exclusive jurisdiction of the competent courts of the Republic of Kazakhstan.
+
+10. Acceptance
+
+By accessing, receiving, or using the Software, you acknowledge that you have read, understood, and agree to be bound by the terms of this License.
+
+End of License
