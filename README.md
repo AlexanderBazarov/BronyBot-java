@@ -1,5 +1,9 @@
 # BronyBot-java
 
+<div align="center">
+    <img src="https://i.postimg.cc/5NqcsRZg/Lota-TG-avatar-1.png" alt="Logo" width="300"/>
+</div>
+
 BronyBot-java is a lightweight Java-based bot project. It provides a starting point for building chat/Discord-style bots in Java, with conventions for configuration, building, and running. This README covers how to build, configure, and run the project locally.
 
 > NOTE: This README is intentionally generic — if you want specific instructions for a particular bot platform (Discord, Telegram, Slack), tell me which one and I will update the README with platform-specific setup and examples.
