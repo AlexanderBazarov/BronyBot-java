@@ -75,9 +75,6 @@ If the repository contains a README or example config file already, follow that 
 ## Contributing
 Contributions are welcome. Please open an issue to discuss large changes before sending a PR. Include descriptive titles and test coverage where possible.
 
-## License
-If you have a license selected for this repository, include it here (for example MIT). If you want, I can add an MIT or Apache-2.0 LICENSE file.
-
 ## Contact
 Maintainer: AlexanderBazarov
 
