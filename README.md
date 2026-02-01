@@ -40,13 +40,9 @@ BronyBot-java is a lightweight Java-based bot project. It provides a starting po
 
 3. Build the project
 
-   If the project uses Maven:
-
        mvn clean package
-
-   If the project uses Gradle:
-
-       ./gradlew build
+   
+./gradlew build
 
    Or build with your IDE (IntelliJ, Eclipse).
 
