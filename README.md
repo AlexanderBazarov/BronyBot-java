@@ -44,14 +44,6 @@ BronyBot-java is a lightweight Java-based bot project. It provides a starting po
 
    Or build with your IDE (IntelliJ, Eclipse).
 
-4. Run the bot
-
-   If a runnable jar is produced (example):
-
-       java -jar target/bronybot-java.jar
-
-   Or run via your IDE's run configuration.
-
 ## Configuration
 - bot.token or DISCORD_TOKEN: the token for your bot account (keep secret)
 - bot.prefix: command prefix used by the bot (if commands are prefix-based)
